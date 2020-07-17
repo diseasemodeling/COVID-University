@@ -171,7 +171,7 @@ class CovidModel():
             self.op_ob.travel_num_inf_plot[self.d] = np.sum(self.travel_num_inf[indx_l: indx_u])
 
             # number of quarantined equals to every 14 day interval of diagnosis
-            if self.d <= 13 
+            if self.d <= 13:
                 if self.pre_results == None:
                     self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1])
                 else:
