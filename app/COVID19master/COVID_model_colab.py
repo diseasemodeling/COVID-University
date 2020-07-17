@@ -527,10 +527,6 @@ class CovidModel():
         self.tot_num_new_inf[0] = self.pre_results['self.tot_num_new_inf']
         self.op_ob.cumulative_cost_plot[0] = self.pre_results['self.op_ob.cumulative_cost_plot']
         
-
-
-
-
     # Function to intialize simulation
     # Input parameter:
     # NULL
