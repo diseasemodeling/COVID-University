@@ -537,6 +537,7 @@ class CovidModel():
         self.op_ob.cumulative_cost_plot[0] = self.pre_results['self.op_ob.cumulative_cost_plot']
 
         self.num_diag_hist = np.copy(self.pre_results['self.num_diag_hist'])
+        print('shape',self.num_diag_hist.shape)
         
         
     # Function to intialize simulation

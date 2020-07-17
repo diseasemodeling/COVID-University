@@ -62,6 +62,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
         i += 1  # move time
         timer = time.time() - time_start # update timer
     mod = model.t - model.d * model.inv_dt
+    print('mod', mod)
     mod = 0
     date_range = pd.date_range(start= model.sim_start_day, periods= model.d, freq = 'D')
     # ^^ FROM XINMENG ... idk what this means
@@ -79,7 +80,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
            'self.tot_num_new_inf': model.tot_num_new_inf[model.t-mod],
            'self.op_ob.cumulative_cost_plot': model.op_ob.cumulative_cost_plot[model.d-1],
            'self.next_start_day': date_range[-1].strftime("%m/%d/%Y"),
-           'self.num_diag_hist': model.num_diag[(model.d-14): (model.d+1)].tolist(),
+           'self.num_diag_hist': model.num_diag[(model.d-13): (model.d+1)].tolist(),
            'self.t': model.t}
 
     # get results for graphics on website
