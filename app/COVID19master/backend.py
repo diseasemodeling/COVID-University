@@ -67,8 +67,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
     # ^^ FROM XINMENG ... idk what this means
     # save results... this is used to restart a simulation on next loop
     dic = {'self.pop_dist_sim': model.pop_dist_sim[model.t- mod].tolist(),
-        #    'self.num_diag': model.num_diag[model.t- mod].tolist(),
-           'self.num_diag': model.num_diag[model.t- mod],
+           'self.num_diag': model.num_diag[model.t- mod].tolist(),
            'self.num_hosp': model.num_hosp[model.t- mod].tolist(),
            'self.num_dead': model.num_dead[model.t- mod].tolist(),
            'self.num_base_test': model.num_base_test[model.t- mod].tolist(),
@@ -78,9 +77,8 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
            'self.tot_num_dead': model.tot_num_dead[model.t-mod],
            'self.tot_num_hosp': model.tot_num_hosp[model.t-mod],
            'self.tot_num_new_inf': model.tot_num_new_inf[model.t-mod],
-           'self.cumulative_cost': model.cumulative_cost_plot[model.t - mod],
+           'self.op_ob.cumulative_cost_plot': model.op_ob.cumulative_cost_plot[model.d-1],
            'self.next_start_day': date_range[-1].strftime("%m/%d/%Y"),
-           'self.num_diag_hist': model.num_diag[model.d-13: model.d + 1].tolist(),
            'self.t': model.t}
     # get results for graphics on website
     output = model.op_ob.write_current_results_mod()

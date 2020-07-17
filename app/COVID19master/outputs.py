@@ -22,7 +22,6 @@ class output_var:
         self.trac_test_cost = np.zeros(sizeofrun)               # cost of contact and tracing
         self.bse_test_cost = np.zeros(sizeofrun)                # cost of symptom-based testing
         self.tot_test_cost_plot = np.zeros(sizeofrun)           # total cost of testing
-        self.quarantine_cost_plot = np.zeros(sizeofrun)         # cost of quarantine
 
         self.num_uni = np.zeros(sizeofrun)                      # number of universal testing
         self.num_trac = np.zeros(sizeofrun)                     # number of contact and tracing
@@ -71,7 +70,6 @@ class output_var:
                            'Cost of mass tests': self.univ_test_cost[1:],
                            'Cost of trace and tests':self.trac_test_cost[1:],
                            'Cost of symptom-based tests': self.bse_test_cost[1:],
-                           'Cost of quarantine': self.quarantine_cost_plot[1:],
                            'total cost of testing': self.tot_test_cost_plot[1:],
                            'Number of new diagnosis through contact tracing': self.num_trac[1:],
                            'Number of new diagnosis through symptom-based testing': self.num_base[1:],
@@ -82,16 +80,16 @@ class output_var:
                            'Number of infected, diagnosed': self.num_diag_inf[1:],
                            'Number of infected, undiagnosed': self.num_undiag_inf[1:],
                            'Number of new infection': self.num_new_inf_plot[1:],
-                           'Number of quarantined (only true positive)': self.num_quarantined_plot[1:],
+                           'Number of quarantined (per day)(with 0'+ '%' +' false positives)': self.num_quarantined_plot[1:],
                            'Number of infected among traveling': self.travel_num_inf_plot[1:],
-                           'Number of trace and tests': self.T_c_plot[1:],
-                           'Number of mass tests': self.T_u_plot[1:],
+                           'Number of trace and tests (per day)': self.T_c_plot[1:],
+                           'Number of mass tests (per day)': self.T_u_plot[1:],
                            'Contacts per day': self.policy_plot[1:, 0],
                            'Testing capacity – maximum tests per day through contact tracing': self.policy_plot[1:, 1],
                            'Testing capacity – maximum tests per day through universal testing': self.policy_plot[1:, 2],
                            'Cumulative diagnosis': self.cumulative_inf[1:],
                            'Cumulative hospitalized': self.cumulative_hosp[1:],
                            'Cumulative deaths': self.cumulative_dead[1:],
-                           'Cumulative cost': self.cumulative_cost_plot[1:],
+                           'Cumulative cost': self.tot_test_cost_plot.cumsum()[1:],
                            'Cumulative cases (diagnosed and undiagnosed)': self.cumulative_new_inf_plot[1:]})
         return df
