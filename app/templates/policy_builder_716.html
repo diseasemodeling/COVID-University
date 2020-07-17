@@ -1,0 +1,668 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='w3-container' style="background-color:#34495E; font-size:1vw"  id='everything'>
+  <div class='w3-panel  w3-col s3'>
+    <div class='w3-border w3-round w3-blue-grey' style="height:67.5vh">
+      <h3 class='w3-border-bottom' style='text-align:center'>Simulation Parameters</h3>
+      <h4 class='w3-border-top' style='text-align:center'> Timeline</h4>
+      <div class='w3-row'>
+        <div class='w3-col s6'>Start Simulation:</div>
+        <input id=simStart  class='w3-round w3-col s6' type=date value=2020-08-24  onchange='remakeUserTable()' ></input>
+      </div>
+      <div class='w3-row'>
+        <div class='w3-col s6'>End Simulation:</div>
+        <input id=simEnd  class='w3-round w3-col s6' type=date value=2020-11-30  onchange='remakeUserTable()' ></input>
+      </div>
+      <h3 class='w3-border-top' style='text-align:center'> Starting Conditions</h3>
+      <div>
+        <div class='w3-row'>
+          <div class='w3-col s8'>Enter Population Size:</div>
+          <input id=popSize class='w3-round w3-col s4' type=number value=38000></input>
+        </div>
+        <div class='w3-row'>
+           <div class='w3-col s8'>Initial Infections:</div>
+           <input id=initialInfections class='w3-round w3-col s4' type=number value=250></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s8'>Outside Infections(RENAME):</div>
+          <input id=outsideInfections class='w3-round w3-col s4' type=number value=500></input>
+        </div>
+      </div>
+      <h4 class='w3-border-top' style='text-align:center'> Unit Costs (Per Person)</h4>
+      <div>
+        <div class='w3-row'>
+          <div class='w3-col s9'>Symptom-Based Testing:</div>
+          <input id=costSB class='w3-round w3-col s3' type=number value=50 onchange='updateOverview()'></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s9 w3-tooltip'>Contact Trace & Testing
+             <i class="fa fa-info-circle" aria-hidden="true"></i>:
+             <span class="w3-text">(<em>Per Contact</em>)</span>
+           </div>
+          <input id=costCT class='w3-round w3-col s3' type=number value=50 onchange='updateOverview()'></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s9'>Mass Testing:</div>
+          <input id=costUT class='w3-round w3-col s3' type=number value=50 onchange='updateOverview()'></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s9'>Quarantine:</div>
+          <input id=costUT class='w3-round w3-col s3' type=number value=50 onchange='updateOverview()'></input>
+        </div>
+      </div>
+    </div>
+    <div class='w3-border w3-panel w3-round w3-blue-grey' style="height:15vh">
+      <div><button class='w3-button w3-green w3-round w3-border w3-container w3-col s12' onclick="switchTab('goReview', 'reviewTab')" style='height:7vh'>Review Policies</button></div>
+      <div><button class='w3-button w3-red w3-round w3-border w3-container w3-col s12' onclick='start_sim()' style='height:7vh'>Run Simulation</button></div>
+    </div>
+  </div>
+  <div class='w3-panel w3-border w3-round w3-col s9 w3-blue-grey' style="height:85vh; overflow-y:scroll">
+    <div class="w3-bar w3-black">
+      <button id=goReview class="w3-bar-item w3-button tablink w3-red" onclick="switchTab('goReview', 'reviewTab')">Overview</button>
+      <button id=goCR class="w3-bar-item w3-button tablink" onclick="switchTab('goCR', 'contactReductionTab')">Contact Rate</button>
+      <button id=goUT class="w3-bar-item w3-button tablink" onclick="switchTab('goUT', 'universalTestingTab')">% Mass Testing</button>
+      <button id=goCT class="w3-bar-item w3-button tablink" onclick="switchTab('goCT', 'contactTracingTab')">% Trace and Test</button>
+      <button id=goResult class="w3-bar-item w3-button tablink" onclick="switchTab('goResult', 'simResultGraphs')">Simulation Results</button>
+    </div>
+    <div id=contactReductionTab class='tabbed' style="display:none">
+      <div class='w3-panel  w3-col s6'>
+        <div class='w3-border w3-round' style='height:42.5vh'>
+          <h2 style='text-align:center'><u>Population Contact Rate</u></h2>
+          <div class='w3-row'>
+            <div class='w3-col s3'>Description:</div>
+            <div class='w3-col s9'> Average number of contacts per person per day</div>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Data Entry:</p>
+            <p class='w3-col s9'> Values must be equal or greater than 0</p>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Note:</p>
+            <p class='w3-col s9'> Empty cells are okay. Data from latest non-empty cell with forward-fill</p>
+          </div>
+        </div>
+        <div class='w3-border w3-round w3-margin-top' style='height:30vh'>
+          <div class='w3-border w3-light-grey' id=inputGraphContactReduction1></div>
+        </div>
+      </div>
+      <div class='w3-panel w3-col s6 w3-round w3-border' style='height:75vh'>
+        <div style='overflow-y:scroll; height:66vh'>
+          <table id=usertableCR class='w3-table-all w3-hoverable w3-tiny w3-centered' style="color:black"></table>
+        </div>
+        <p><button id=saveCRtable class='w3-button w3-green w3-round w3-block' onclick='savePolicies()'>Save Policies</button></p>
+      </div>
+    </div>
+    <div id=universalTestingTab class='tabbed' style="display:none">
+      <div class='w3-panel  w3-col s6'>
+        <div class='w3-border w3-round' style='height:42.5vh'>
+          <h3 style='text-align:center'><u>% Mass Testing</u></h3>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Description:</p>
+            <p class='w3-col s9'> Percent of the population to test per day</p>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Data Entry:</p>
+            <p class='w3-col s9'> Values must be between 0 and 100</p>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Note:</p>
+            <p class='w3-col s9'> Empty cells are okay. Data from latest non-empty cell with forward-fill</p>
+          </div>
+        </div>
+        <div class='w3-border w3-round w3-margin-top' style='height:30vh'>
+          <div class='w3-border w3-light-grey' id=inputGraphUniversalTracing1></div>
+        </div>
+      </div>
+      <div class='w3-panel w3-col s6 w3-round w3-border' style='height:75vh'>
+        <div style='overflow-y:scroll; height:66vh'>
+          <table id=usertableUT class='w3-table-all w3-hoverable w3-tiny w3-centered' style="color:black"></table>
+        </div>
+        <p><button id=saveUTtable class='w3-button w3-green w3-round w3-block' onclick='savePolicies()'> Save Policies</button></p>
+      </div>
+    </div>
+    <div id=contactTracingTab class='tabbed' style="display:none">
+      <div class='w3-panel  w3-col s6'>
+        <div class='w3-border w3-round' style='height:42.5vh'>
+          <h3 style='text-align:center'><u>Trace and Test</u></h3>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Description:</p>
+            <p class='w3-col s9'> Rate at which asymptomatic persons are diagnosed, equivalent to inverse of days from exposure to dianosis</p>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Data Entry:</p>
+            <p class='w3-col s9'> Values must be between 0 and 1</p>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s3'>Note:</p>
+            <p class='w3-col s9'> Empty cells are okay. Data from latest non-empty cell with forward-fill</p>
+          </div>
+        </div>
+        <div class='w3-border w3-round w3-margin-top' style='height:30vh'>
+          <div class='w3-border w3-light-grey' id=inputGraphContactTracing1></div>
+        </div>
+      </div>
+      <div class='w3-panel w3-col s6 w3-round w3-border' style='height:75vh'>
+        <div style='overflow-y:scroll; height:66vh'>
+          <table id=usertableCT class='w3-table-all w3-hoverable w3-tiny w3-centered' style="color:black"></table>
+        </div>
+        <p><button id=saveCTtable class='w3-button w3-green w3-round w3-block' onclick='savePolicies()'> Save Policies</button></p>
+      </div>
+    </div>
+    <div id=reviewTab class='tabbed'>
+      <div class='w3-panel w3-col s6'>
+        <div class='w3-border w3-round' style='height:42.5vh'>
+          <h2 style='text-align:center; margin-bottom:0px'><u>Introduction & Guide</u></h2>
+          <div class='w3-row'>
+            <p class='w3-col s12'> This is a simulation tool for the evaluation
+            of preparedness plans (up to 3 at a time) at an organization-level, such
+            as a university.</p>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s12'> Define population sizes, expected costs (left), and
+               input up to 3 scenarios for each of the following:</p>
+            <div class='w3-col s6'> 1. Population Contact Rates <br> 2. Contact Tracing & Testing</div>
+            <div class='w3-col s6'> 3. Mass Testing Rates <br> 4. Transmission Risk (Soon)</div>
+          </div>
+          <div class='w3-row'>
+            <p class='w3-col s12'> For more information: Follow the links at the bottom of this page</p>
+          </div>
+        </div>
+        <div class='w3-border w3-round w3-margin-top' style='height:30vh'>
+          <div style='text-align:center'>Policy Builder Checklist</div>
+          <table class='w3-table-all w3-small w3-centered' style='color:black'>
+            <tr>
+              <th class='w3-border'>Policy Name</th>
+              <th class='w3-border' style="color:steelblue";>Plan A</th>
+              <th class='w3-border' style="color:red";>Plan B</th>
+              <th class='w3-border' style="color:green";>Plan C</th>
+            </tr>
+            <tr>
+              <td class='w3-border'>Contact Rate</td>
+              <td id=crA class='w3-border'></td>
+              <td id=crB class='w3-border'></td>
+              <td id=crC class='w3-border'></td>
+            </tr>
+            <tr>
+              <td class='w3-border'>% Mass Testing</td>
+              <td id=utA class='w3-border'></td>
+              <td id=utB class='w3-border'></td>
+              <td id=utC class='w3-border'></td>
+            </tr>
+            <tr>
+              <td class='w3-border'>% Trace & Tracing</td>
+              <td id=ctA class='w3-border'></td>
+              <td id=ctB class='w3-border'></td>
+              <td id=ctC class='w3-border'></td>
+            </tr>
+            <tr>
+              <td class='w3-border'>Is Usable?</td>
+              <td id=useA class='w3-border'>No</td>
+              <td id=useB class='w3-border'>No</td>
+              <td id=useC class='w3-border'>No</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class='w3-panel w3-border w3-col s6 w3-round' style='height:75vh'>
+        <p><div class='w3-border w3-round w3-light-grey' id=inputGraphContactReduction2></div></p>
+        <div class='w3-border w3-round w3-light-grey' id=inputGraphContactTracing2></div>
+        <p><div class='w3-border w3-round w3-light-grey' id=inputGraphUniversalTracing2></div></p>
+      </div>
+    </div>
+    <div id='simResultGraphs' class='tabbed' style="display:none">
+      <div id=simNotRunYet style='display:block'>
+        <h3> You have not run the simulator yet</h3>
+        <h3> Click <b>REVIEW POLICIES</b> (bottom left) prior to running</h3>
+        <h3> Click <b>RUN SIMULATION</b> button to simulate your policy scenarios! </h3>
+      </div>
+      <div id=simRunning style='display:none'>
+        <div>
+          <h3> The simulator is currently running...  Estimated Time is about ~ <i id=timeToComp>5</i> seconds per scenario</h3>
+          <p style='text-align:center'><i class="fa fa-spinner w3-spin" style="font-size:100px"></i></p>
+          <h2> Progress </h2>
+          <div id=holdProgA class="w3-light-grey" style='display:none'>
+            <div id=progA class="w3-container w3-blue w3-center" style="width:20%">Plan A: 0%</div>
+          </div><br>
+          <div id=holdProgB class="w3-light-grey" style='display:none'>
+            <div id=progB class="w3-container w3-red w3-center" style="width:20%">Plan B: 0%</div>
+          </div><br>
+          <div id=holdProgC class="w3-light-grey" style='display:none'>
+            <div id=progC class="w3-container w3-green" style="width:20%">Plac C: 0%</div>
+          </div><br>
+          <h3> DO NOT LEAVE THIS PAGE while the simulation is running </h3>
+          <h3> Results will be updated below every 15 seconds until the simulation has completed</h3>
+          <h3> Once the simulation is completed, these messages will dissapear</h3>
+        </div>
+      </div>
+      <div id=simCompleted style='display:none'>
+        <h3> Simulation Completed,  <a href="{{ url_for('blueprint.download_newfile') }}">Download Excel File With Results (Not Functional Yet) </a></h3>
+      </div>
+      <div class='w3-col s6' style='height:60vh'>
+        <div class='w3-border w3-light-grey' id=graphHospital></div>
+        <div class='w3-border w3-light-grey' id=graphDeath></div>
+        <div class='w3-border w3-light-grey' id=graphUndiagnosedCases></div>
+        <div class='w3-border w3-light-grey' id=graphCost></div>
+      </div>
+      <div class='w3-col s6' style='height:60vh'>
+        <div class='w3-border w3-light-grey' id=graphTrace></div>
+        <div class='w3-border w3-light-grey' id=graphMass></div>
+        <div class='w3-border w3-light-grey' id=graphDiagnosedCases></div>
+        <div class='w3-border w3-light-grey' id=graphQuarentine></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+states_hash =
+  {
+    'Alabama': 'AL',
+    'Alaska': 'AK',
+    'Arizona': 'AZ',
+    'Arkansas': 'AR',
+    'California': 'CA',
+    'Colorado': 'CO',
+    'Connecticut': 'CT',
+    'Delaware': 'DE',
+    'District Of Columbia': 'DC',
+    'Florida': 'FL',
+    'Georgia': 'GA',
+    'Guam': 'GU',
+    'Hawaii': 'HI',
+    'Idaho': 'ID',
+    'Illinois': 'IL',
+    'Indiana': 'IN',
+    'Iowa': 'IA',
+    'Kansas': 'KS',
+    'Kentucky': 'KY',
+    'Louisiana': 'LA',
+    'Maine': 'ME',
+    'Maryland': 'MD',
+    'Massachusetts': 'MA',
+    'Michigan': 'MI',
+    'Minnesota': 'MN',
+    'Mississippi': 'MS',
+    'Missouri': 'MO',
+    'Montana': 'MT',
+    'Nebraska': 'NE',
+    'Nevada': 'NV',
+    'New Hampshire': 'NH',
+    'New Jersey': 'NJ',
+    'New Mexico': 'NM',
+    'New York': 'NY',
+    'North Carolina': 'NC',
+    'North Dakota': 'ND',
+    'Ohio': 'OH',
+    'Oklahoma': 'OK',
+    'Oregon': 'OR',
+    'Pennsylvania': 'PA',
+    'Puerto Rico': 'PR',
+    'Rhode Island': 'RI',
+    'South Carolina': 'SC',
+    'South Dakota': 'SD',
+    'Tennessee': 'TN',
+    'Texas': 'TX',
+    'Utah': 'UT',
+    'Vermont': 'VT',
+    'Virgin Islands': 'VI',
+    'Virginia': 'VA',
+    'Washington': 'WA',
+    'West Virginia': 'WV',
+    'Wisconsin': 'WI',
+    'Wyoming': 'WY'
+  }
+//stateDropdown(id='simState')
+
+function remakeUserTable(){
+  makeEmptyTable("usertableCR", startVal=1, endVal=10)
+  makeEmptyTable("usertableCT", startVal=.5, endVal=.3)
+  makeEmptyTable("usertableUT", startVal=50, endVal=0)
+  savePolicies()
+}
+remakeUserTable()
+
+function stateDropdown(id='selectState'){
+  dropdown = document.getElementById(id)
+  for (state in states_hash){
+    var stateOption = new Option(state, state)
+    dropdown.options.add(stateOption)
+  }
+}
+
+function savePolicies(){
+  dataCR = tableToJson("usertableCR", 'column')
+  dataUT = tableToJson("usertableUT", 'column')
+  dataCT = tableToJson("usertableCT", 'column')
+  makeABCLine('inputGraphContactReduction1', 'viewInputContactReduction1',
+              dataCR, dataType='CR', .4);
+  makeABCLine('inputGraphContactTracing1', 'viewInputContactTracing1',
+              dataCT, dataType='CT', .4)
+  makeABCLine('inputGraphUniversalTracing1', 'viewInputUniversalTracing1',
+              dataUT, dataType='UT', .4)
+
+  dataCR = tableToJson("usertableCR", 'column')
+  dataUT = tableToJson("usertableUT", 'column')
+  dataCT = tableToJson("usertableCT", 'column')
+  makeABCLine('inputGraphContactReduction2', 'viewInputContactReduction2',
+                    dataCR, dataType='CR', .3)
+  makeABCLine('inputGraphContactTracing2', 'viewInputContactTracing2',
+                    dataCT, dataType='CT', .3)
+  makeABCLine('inputGraphUniversalTracing2', 'viewInputUniversalTracing2',
+                    dataUT, dataType='UT', .3)
+  updateOverview()
+}
+
+function updateOverview(){
+  dataCR_A = tableToJson("usertableCR", 'column')['PlanA'].reduce(function(a,b){return a + b;}, 0);
+  dataCR_B = tableToJson("usertableCR", 'column')['PlanB'].reduce(function(a,b){return a + b;}, 0);
+  dataCR_C = tableToJson("usertableCR", 'column')['PlanC'].reduce(function(a,b){return a + b;}, 0);
+  dataCT_A = tableToJson("usertableCT", 'column')['PlanA'].reduce(function(a,b){return a + b;}, 0);
+  dataCT_B = tableToJson("usertableCT", 'column')['PlanB'].reduce(function(a,b){return a + b;}, 0);
+  dataCT_C = tableToJson("usertableCT", 'column')['PlanC'].reduce(function(a,b){return a + b;}, 0);
+  dataUT_A = tableToJson("usertableUT", 'column')['PlanA'].reduce(function(a,b){return a + b;}, 0);
+  dataUT_B = tableToJson("usertableUT", 'column')['PlanB'].reduce(function(a,b){return a + b;}, 0);
+  dataUT_C = tableToJson("usertableUT", 'column')['PlanC'].reduce(function(a,b){return a + b;}, 0);
+  if (dataCR_A > 0){document.getElementById('crA').innerHTML = '&#10004;'}else{document.getElementById('crA').innerHTML = ''}
+  if (dataCR_B > 0){document.getElementById('crB').innerHTML = '&#10004;'}else{document.getElementById('crB').innerHTML = ''}
+  if (dataCR_C > 0){document.getElementById('crC').innerHTML = '&#10004;'}else{document.getElementById('crC').innerHTML = ''}
+  if (dataCT_A > 0){document.getElementById('ctA').innerHTML = '&#10004;'}else{document.getElementById('ctA').innerHTML = ''}
+  if (dataCT_B > 0){document.getElementById('ctB').innerHTML = '&#10004;'}else{document.getElementById('ctB').innerHTML = ''}
+  if (dataCT_C > 0){document.getElementById('ctC').innerHTML = '&#10004;'}else{document.getElementById('ctC').innerHTML = ''}
+  if (dataUT_A > 0){document.getElementById('utA').innerHTML = '&#10004;'}else{document.getElementById('utA').innerHTML = ''}
+  if (dataUT_B > 0){document.getElementById('utB').innerHTML = '&#10004;'}else{document.getElementById('utB').innerHTML = ''}
+  if (dataUT_C > 0){document.getElementById('utC').innerHTML = '&#10004;'}else{document.getElementById('utC').innerHTML = ''}
+  if (dataCR_A > 0 || dataCT_A > 0 || dataUT_A > 0){
+    document.getElementById('useA').innerHTML = 'Yes'
+  } else {document.getElementById('useA').innerHTML = 'No'}
+  if (dataCR_B > 0 || dataCT_B > 0 || dataUT_B > 0){
+    document.getElementById('useB').innerHTML = 'Yes'
+  } else {document.getElementById('useB').innerHTML = 'No'}
+  if (dataCR_C > 0 || dataCT_C > 0 || dataUT_C > 0){
+    document.getElementById('useC').innerHTML = 'Yes'
+  } else {document.getElementById('useC').innerHTML = 'No'}
+
+
+}
+
+function makeEmptyTable(parentDiv, startVal, endVal) {
+    //document.getElementById(parentDiv).innerHTML = '' // clear old table if any
+    table = document.getElementById(parentDiv) // establish new table
+    table.innerHTML = ''
+    simEnd = new Date(document.getElementById('simEnd').value).getTime()
+    simStart = new Date(document.getElementById('simStart').value).getTime()
+    simLength = simEnd - simStart
+    numWeeks = Math.round(simLength / 60 / 60 / 24 / 1000 / 7 )
+    //numWeeks = Math.round(document.getElementById('simLength').value / 7)
+    numRows = numWeeks
+    numCol = 4
+
+    keys = ['Date', 'Plan A', 'Plan B', 'Plan C']
+    colors = ['black', 'steelblue', 'red', 'green']
+    row = table.insertRow();
+    for (key in keys) {
+      let th = document.createElement("th");
+      let text = document.createTextNode(keys[key]);
+      th.appendChild(text);
+      th.style.color = colors[key];
+      th.style.fontSize = '16px'
+      th.className='w3-border'
+      row.appendChild(th);
+
+    }
+    for (i=1; i < numRows; i++) {
+        newRow = table.insertRow();
+        for (j=0; j<numCol; j++) {
+            newCell = newRow.insertCell();
+            if (j == 0) {
+              newCell.innerText = "Week " + String(i)
+            } else if (j == 1){
+              newCell.innerText = (startVal + ((endVal - startVal) / (numRows-1) * i)).toFixed(2)
+              newCell.contentEditable = true;
+
+            } else {
+              newCell.innerText = '';
+              newCell.contentEditable = true;
+            }
+            newCell.className = 'w3-border'
+        }
+    }
+}
+
+
+//graph_stateChoice()
+function graph_stateChoice(){
+  var state = d3.select("#simState")._groups[0][0].value // get user pasted data
+  var dataType = d3.select("#quickStat")._groups[0][0].value
+  document.getElementById('StateNameTitle').innerHTML = 'Policy Builder - ' + state
+  d3.json("https://covidtracking.com/api/v1/states/daily.json").then(function(covid_data){
+    makeCovidTrackerLine('resultGraph', 'viewState', covid_data,
+       scaleType='linear', state=state, dataType=dataType, cumulative='daily',
+       simulation=null, simDataType=null, aspect=.5)
+  })
+}
+
+function data_for_sim(){
+  var dataCR = tableToJson("usertableCR", 'column')
+  var dataUT = tableToJson("usertableUT", 'column')
+  var dataCT = tableToJson("usertableCT", 'column')
+  costSB = d3.select("#costSB")._groups[0][0].value
+  costCT = d3.select("#costCT")._groups[0][0].value
+  costUT = d3.select("#costUT")._groups[0][0].value
+  //costUW = d3.select("#costUW")._groups[0][0].value
+  costUW = 50
+  //var state = d3.select("#simState")._groups[0][0].value // get user pasted data
+  state = 'New York'
+  to_python = {'state':state,
+               'policy': {'CT':{'Date':dataCT['Date'],
+                                'A':dataCT['PlanA'],
+                                'B':dataCT['PlanB'],
+                                'C':dataCT['PlanC'],},
+                          'CR':{'Date':dataCR['Date'],
+                                'A':dataCR['PlanA'],
+                                'B':dataCR['PlanB'],
+                                'C':dataCR['PlanC'],},
+                          'UT':{'Date':dataUT['Date'],
+                                'A':dataUT['PlanA'],
+                                'B':dataUT['PlanB'],
+                                'C':dataUT['PlanC'],},},
+               'cost':[costSB, costCT, costUT],
+               'UW':costUW,
+               'new':'True'}
+  return to_python
+}
+
+function start_sim(to_python=null){
+  document.getElementById('simNotRunYet').style.display = 'none'
+  document.getElementById('simRunning').style.display = 'block'
+  document.getElementById('simCompleted').style.display='none'
+  switchTab('goResult', 'simResultGraphs')
+  document.getElementById('timeToComp').innerHTML = 33
+  if (to_python == null){
+    reset_progress_bar()
+    to_python = data_for_sim()
+    d3.select("#infsim").remove()
+    d3.select("#undiag").remove()
+    d3.select("#hospsim").remove()
+    d3.select("#deathsim").remove()
+    d3.select("#costsim").remove()
+    d3.select("#tracesim").remove()
+    d3.select("#masssim").remove()
+    d3.select("#quarsim").remove()
+  }
+  $.ajax({
+        type: "POST",
+        url: "prep_sim", // url on python side
+        data: JSON.stringify(to_python),
+        contentType: "application/json",
+        success: function (dataset) {
+          all_data = dataset.data;
+          simA = to_object(all_data['A']['to_java'], 'A')
+          if (all_data['B']==undefined){simB=null}else{simB=to_object(all_data['B']['to_java'], 'B')}
+          if (all_data['C']==undefined){simC=null}else{simC=to_object(all_data['C']['to_java'], 'C')}
+          makeSimLine(parentName='graphDiagnosedCases', SVG_name='infsim',
+                      dataType='number of infected, diagnosed',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphUndiagnosedCases', SVG_name='undiag',
+                      dataType='number of infected, undiagnosed',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphHospital', SVG_name='hospsim',
+                      dataType='cumulative hospitalized',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphDeath', SVG_name='deathsim',
+                      dataType='cumulative deaths',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphQuarentine', SVG_name='quarsim',
+                      dataType='number of quarantined',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphCost', SVG_name='costsim',
+                      dataType='total cost of testing',
+                      simA=simA, simB=simB, simC=simC);
+          makeSimLine(parentName='graphTrace', SVG_name='tracesim',
+                      dataType='number of new diagnosis through contact tracing',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphMass', SVG_name='masssim',
+                      dataType='number of new diagnosis through universal testing',
+                      simA=simA, simB=simB, simC=simC)
+          makeSimLine(parentName='graphQuarentine', SVG_name='quarsim',
+                      dataType='number of quarantined',
+                      simA=simA, simB=simB, simC=simC)
+          if (all_data['status'] == 'Not Finished'){
+            update_progress_bar(all_data)
+            start_sim(to_python=all_data)
+          } else {
+            document.getElementById('simRunning').style.display='none'
+            document.getElementById('simCompleted').style.display='block'
+          }
+        },
+  });
+}
+
+function reset_progress_bar(){
+  if (document.getElementById('useA').innerHTML == 'Yes'){
+    document.getElementById('holdProgA').style.display = 'block'
+    document.getElementById('progA').style.width = '20%';
+    document.getElementById('progA').innerHTML = 'Plan A: 0%'
+  }else{document.getElementById('holdProgA').style.display = 'none'}
+  if (document.getElementById('useB').innerHTML == 'Yes'){
+    document.getElementById('holdProgB').style.display = 'block'
+    document.getElementById('progB').style.width = '20%';
+    document.getElementById('progB').innerHTML = 'Plan B: 0%'
+  }else{document.getElementById('holdProgC').style.display = 'none'}
+  if (document.getElementById('useC').innerHTML == 'Yes'){
+    document.getElementById('holdProgC').style.display = 'block'
+    document.getElementById('progC').style.width = '20%';
+    document.getElementById('progC').innerHTML = 'Plan C: 0%'
+  }else{document.getElementById('holdProgC').style.display = 'none'}
+}
+
+
+function update_progress_bar(all_data){
+  simEnd = new Date(document.getElementById('simEnd').value).getTime()
+  simStart = new Date(document.getElementById('simStart').value).getTime()
+  simLength = simEnd - simStart
+  numDays = Math.round(simLength / 60 / 60 / 24 / 1000)
+  if (document.getElementById('useA').innerHTML == 'Yes'){
+    document.getElementById('holdProgA').style.display = 'block'
+    if (to_object(all_data['A']['to_java']) != null){
+      days_simulated = to_object(all_data['A']['to_java']).length
+      percentComplete = 100 * days_simulated / numDays
+      document.getElementById('progA').style.width = percentComplete + '%';
+      document.getElementById('progA').innerHTML = 'Plan A: ' + String(parseInt(percentComplete)) + '%'
+    }
+  }
+  if (document.getElementById('useB').innerHTML == 'Yes'){
+    document.getElementById('holdProgB').style.display = 'block'
+    if (to_object(all_data['B']['to_java']) != null){
+      days_simulated = to_object(all_data['B']['to_java']).length
+      percentComplete = 100 * days_simulated / numDays
+      document.getElementById('progB').style.width = percentComplete + '%';
+      document.getElementById('progB').innerHTML = 'Plan B: ' + String(parseInt(percentComplete)) + '%'
+
+    }
+  }
+  if (document.getElementById('useC').innerHTML == 'Yes'){
+    document.getElementById('holdProgC').style.display = 'block'
+    if (to_object(all_data['C']['to_java']) != null){
+      days_simulated = to_object(all_data['C']['to_java']).length
+      percentComplete = 100 * days_simulated / numDays
+      document.getElementById('progC').style.width = percentComplete + '%';
+      document.getElementById('progC').innerHTML = 'Plan C: ' + String(parseInt(percentComplete)) + '%'
+
+    }
+  }
+}
+
+function to_object(all_data, plan) {
+  if (all_data != 'null'){
+  json = JSON.parse(all_data)
+  array = [];
+  Object.keys(json).forEach(function(key){array.push(json[key])})
+  } else {
+    array=null
+  }
+  return array
+}
+
+function tableToJson(id, type='index') {
+  var table = document.getElementById(id)
+  var data = [];
+  // first row needs to be headers
+  var headers = [];
+  for (var i=0; i<table.rows[0].cells.length; i++) {
+      headers[i] = table.rows[0].cells[i].innerHTML.replace(/ /gi,'');
+  }
+  if (type == 'index'){
+    // go through cells
+  	start = 1
+    for (var i=start; i<table.rows.length; i++) {
+        var tableRow = table.rows[i];
+        var rowData = {};
+        for (var j=0; j<tableRow.cells.length ; j++) {
+            rowData[headers[j]] = tableRow.cells[j].innerHTML;
+        }
+        data.push(rowData);
+    }
+  }else{
+    // go through cells
+    for (var i=0; i<table.rows[0].cells.length; i++) {
+      var colData = [];
+      remember = parseFloat(0)
+      for (var j=1; j<table.rows.length ; j++) {
+        if (i==0){
+          colData.push(parseFloat(table.rows[j].cells[i].innerHTML.split(" ")[1]));
+        }else{
+          if (table.rows[j].cells[i].innerHTML != ''){
+            remember = table.rows[j].cells[i].innerHTML
+            colData.push(parseFloat(table.rows[j].cells[i].innerHTML));
+          } else {
+            colData.push(parseFloat(remember));
+          }
+      }}
+      data[headers[i]] = colData;
+    }
+  }
+  return data;
+}
+
+function switchTab(clickTab, showTab) {
+  var i;
+  var x = document.getElementsByClassName("tabbed");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace("w3-red", "");
+  }
+  document.getElementById(showTab).style.display = "block";
+  document.getElementById(clickTab).className += ' w3-red'
+  //graph_stateChoice()
+  savePolicies()
+  }
+
+</script>
+{% endblock %}
