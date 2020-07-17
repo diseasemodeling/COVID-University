@@ -4,51 +4,87 @@
 
 <div class='w3-container' style="background-color:#34495E; font-size:1vw"  id='everything'>
   <div class='w3-panel  w3-col s3'>
-    <div class='w3-border w3-round  w3-blue-grey' style='height:75vh; overflow-y:scroll; font-size:.66vw'>
-      <h2 style='text-align:center; margin-bottom:0px'><u>Introduction & Guide</u></h2>
+    <div class='w3-border w3-round' style="height:75vh; overflow-y:scroll">
+      <h3 class='w3-border-bottom' style='text-align:center'>Initial Population Data</h3>
+      <h4 class='w3-border-top' style='text-align:center'> Timeline</h4>
       <div class='w3-row'>
-        <p class='w3-col s12'> This is a simulation tool for evaluation of epidemic
-           outcomes upon reopening of a residential university, under varying scenarios
-          of transmission risk, contact rates, mass test, and trace and test.
-           Enter initial population data (on the left) and scenarios (on the right)</p>
-      </div>
-      <div class='w3-row w3-border'>
-        <h3 style='text-align:center'> Descriptions <br>(Inital Population Data) </h3>
-        <p class='w3-col s4'> Initial infections: </p>
-        <p class='w3-col s8'>  Expected number of persons with undiagnosed infection on day 1 of reopening </p>
-        <p class='w3-col s4'> Infections from outside contacts (per day): </p>
-        <p class='w3-col s8'> Expected number of infections through contacts with
-                              persons from outside the university population over
-                               the duration of the semester (per day) </p>
-        <p class='w3-col s4'> Unit costs: </p>
-        <p class='w3-col s8'>  Cost per person (could include costs of equipment, infrastructure, personnel, etc.) </p>
-        <p class='w3-col s12'> (Assumption: we assume persons diagnosed with infection are quarantined and isolated)</p>
-      </div>
-      <div class='w3-row w3-border'>
-        <h3 style='text-align:center'> Descriptions (Scenarios) </h3>
-        <p class='w3-col s3'> Transmission Risk (%): </p>
-        <p class='w3-col s9 w3-tooltip'> The chance of transmission per contact per day.
-           Suggested estimates to use:  <br>Baseline: 14% (11.6% - 17%); <br>
-            With facemask-use: 7.8% (5.6% -11.1%); <br>
-            With 6ft distancing: 2.8% ( 1.4% - 5.7%); <br>
-            <i class="fa fa-info-circle" aria-hidden="true"></i>
-            <span class="w3-text">(<em>Estimated using: Relative risk from face mask use in
-            non-healthcare settings: 0.56 (0.40 - 0.79); <br>
-            Relative risk for every 1m distancing: 0.49 (0.26 – 0.93); <br>
-            Source: Chu et al., The Lancet, 395(10242), 2020]</em>)</span>
-            <!--Estimated using: Relative risk from face mask use in
-            non-healthcare settings: 0.56 (0.40 - 0.79); <br>
-            Relative risk for every 1m distancing: 0.49 (0.26 – 0.93); <br>
-            Source: Chu et al., The Lancet, 395(10242), 2020] </p>-->
-        <p class='w3-col s3'> Contact Rate: </p>
-        <p class='w3-col s9'> Average number of contacts per person per day </p>
-        <p class='w3-col s3'> Mass Test (%): </p>
-        <p class='w3-col s9'> Percent of the population to test per day </p>
-        <p class='w3-col s3'> Trace & Test (%): </p>
-        <p class='w3-col s9'> Percent of contacts traced and tested</p>
+        <div class='w3-col s6'>Start Simulation:</div>
+        <input id=simStart  class='w3-round w3-col s6' type=date value=2020-08-24 ></input>
       </div>
       <div class='w3-row'>
-        <p class='w3-col s12'> Follow the links below for more information</p>
+        <div class='w3-col s6'>End Simulation:</div>
+        <input id=simEnd  class='w3-round w3-col s6' type=date value=2020-11-20></input>
+      </div>
+      <h3 class='w3-border-top' style='text-align:center'> Starting Conditions</h3>
+      <div>
+        <div class='w3-row'>
+          <div class='w3-col s8'>Enter Population Size:</div>
+          <input id=popSize class='w3-round w3-col s4' type=number value=38000></input>
+        </div>
+        <div class='w3-row'>
+           <div class='w3-col s8'>Initial Infections:</div>
+           <input id=initialInfections class='w3-round w3-col s4' type=number value=250></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s8'>Infections from outside contacts (per day):</div>
+          <input id=outsideInfections class='w3-round w3-col s4' type=number value=10></input>
+        </div>
+      </div>
+      <h4 class='w3-border-top' style='text-align:center'> Unit Costs (Per Person)</h4>
+      <div>
+        <div class='w3-row'>
+          <div class='w3-col s9'>Symptom-Based Test:</div>
+          <input id=costSB class='w3-round w3-col s3' type=number value=50></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s9 w3-tooltip'>Contact Trace & Test
+             <i class="fa fa-info-circle" aria-hidden="true"></i>:
+             <span class="w3-text">(<em>Per Contact</em>)</span>
+           </div>
+          <input id=costCT class='w3-round w3-col s3' type=number value=50></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s9'>Mass Test:</div>
+          <input id=costUT class='w3-round w3-col s3' type=number value=50></input>
+        </div>
+        <div class='w3-row'>
+          <div class='w3-col s9'>Quarantine:</div>
+          <input id=costQ class='w3-round w3-col s3' type=number value=50></input>
+        </div>
+      </div>
+      <div class='w3-border w3-round w3-margin-top'>
+        <table class='w3-table-all w3-small w3-centered' style='color:black'>
+          <tr>
+            <th class='w3-border'>Policy Name</th>
+            <th class='w3-border' style="color:steelblue";>Plan A</th>
+            <th class='w3-border' style="color:red";>Plan B</th>
+            <th class='w3-border' style="color:green";>Plan C</th>
+          </tr>
+          <tr>
+            <td class='w3-border'>Transmission Risk (%)</td>
+            <td id=trA class='w3-border'></td>
+            <td id=trB class='w3-border'></td>
+            <td id=trC class='w3-border'></td>
+          </tr>
+          <tr>
+            <td class='w3-border'>Contact Rate</td>
+            <td id=crA class='w3-border'></td>
+            <td id=crB class='w3-border'></td>
+            <td id=crC class='w3-border'></td>
+          </tr>
+          <tr>
+            <td class='w3-border'>Mass Test (%)</td>
+            <td id=mtA class='w3-border'></td>
+            <td id=mtB class='w3-border'></td>
+            <td id=mtC class='w3-border'></td>
+          </tr>
+          <tr>
+            <td class='w3-border'>Trace & Trace (%)</td>
+            <td id=ttA class='w3-border'></td>
+            <td id=ttB class='w3-border'></td>
+            <td id=ttC class='w3-border'></td>
+          </tr>
+        </table>
       </div>
     </div>
     <div class='w3-border w3-panel w3-round w3-blue-grey' style="height:7.5vh">
@@ -62,53 +98,51 @@
     </div>
     <div id=reviewTab class='tabbed'>
       <div class='w3-panel w3-col s6'>
-        <div class='w3-border w3-round' style="height:75vh">
-          <h3 class='w3-border-bottom' style='text-align:center'>Initial Population Data</h3>
-          <h4 class='w3-border-top' style='text-align:center'> Timeline</h4>
+        <div class='w3-border w3-round  w3-blue-grey' style='height:75vh; overflow-y:scroll; font-size:.66vw'>
+          <h2 style='text-align:center; margin-bottom:0px'><u>Introduction & Guide</u></h2>
           <div class='w3-row'>
-            <div class='w3-col s6'>Start Simulation:</div>
-            <input id=simStart  class='w3-round w3-col s6' type=date value=2020-08-24 ></input>
+            <p class='w3-col s12'> This is a simulation tool for evaluation of epidemic
+               outcomes upon reopening of a residential university, under varying scenarios
+              of transmission risk, contact rates, mass test, and trace and test.
+               Enter initial population data (on the left) and scenarios (on the right)</p>
+          </div>
+          <div class='w3-row w3-border'>
+            <h3 style='text-align:center'> Descriptions <br>(Inital Population Data) </h3>
+            <p class='w3-col s4'> Initial infections: </p>
+            <p class='w3-col s8'>  Expected number of persons with undiagnosed infection on day 1 of reopening </p>
+            <p class='w3-col s4'> Infections from outside contacts (per day): </p>
+            <p class='w3-col s8'> Expected number of infections through contacts with
+                                  persons from outside the university population over
+                                   the duration of the semester (per day) </p>
+            <p class='w3-col s4'> Unit costs: </p>
+            <p class='w3-col s8'>  Cost per person (could include costs of equipment, infrastructure, personnel, etc.) </p>
+            <p class='w3-col s12'> (Assumption: we assume persons diagnosed with infection are quarantined and isolated)</p>
+          </div>
+          <div class='w3-row w3-border'>
+            <h3 style='text-align:center'> Descriptions (Scenarios) </h3>
+            <p class='w3-col s3'> Transmission Risk (%): </p>
+            <p class='w3-col s9 w3-tooltip'> The chance of transmission per contact per day.
+               Suggested estimates to use:  <br>Baseline: 14% (11.6% - 17%); <br>
+                With facemask-use: 7.8% (5.6% -11.1%); <br>
+                With 6ft distancing: 2.8% ( 1.4% - 5.7%); <br>
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                <span class="w3-text">(<em>Estimated using: Relative risk from face mask use in
+                non-healthcare settings: 0.56 (0.40 - 0.79); <br>
+                Relative risk for every 1m distancing: 0.49 (0.26 – 0.93); <br>
+                Source: Chu et al., The Lancet, 395(10242), 2020]</em>)</span>
+                <!--Estimated using: Relative risk from face mask use in
+                non-healthcare settings: 0.56 (0.40 - 0.79); <br>
+                Relative risk for every 1m distancing: 0.49 (0.26 – 0.93); <br>
+                Source: Chu et al., The Lancet, 395(10242), 2020] </p>-->
+            <p class='w3-col s3'> Contact Rate: </p>
+            <p class='w3-col s9'> Average number of contacts per person per day </p>
+            <p class='w3-col s3'> Mass Test (%): </p>
+            <p class='w3-col s9'> Percent of the population to test per day </p>
+            <p class='w3-col s3'> Trace & Test (%): </p>
+            <p class='w3-col s9'> Percent of contacts traced and tested</p>
           </div>
           <div class='w3-row'>
-            <div class='w3-col s6'>End Simulation:</div>
-            <input id=simEnd  class='w3-round w3-col s6' type=date value=2020-11-20></input>
-          </div>
-          <h3 class='w3-border-top' style='text-align:center'> Starting Conditions</h3>
-          <div>
-            <div class='w3-row'>
-              <div class='w3-col s8'>Enter Population Size:</div>
-              <input id=popSize class='w3-round w3-col s4' type=number value=38000></input>
-            </div>
-            <div class='w3-row'>
-               <div class='w3-col s8'>Initial Infections:</div>
-               <input id=initialInfections class='w3-round w3-col s4' type=number value=250></input>
-            </div>
-            <div class='w3-row'>
-              <div class='w3-col s8'>Infections from outside contacts (per day):</div>
-              <input id=outsideInfections class='w3-round w3-col s4' type=number value=10></input>
-            </div>
-          </div>
-          <h4 class='w3-border-top' style='text-align:center'> Unit Costs (Per Person)</h4>
-          <div>
-            <div class='w3-row'>
-              <div class='w3-col s9'>Symptom-Based Test:</div>
-              <input id=costSB class='w3-round w3-col s3' type=number value=50></input>
-            </div>
-            <div class='w3-row'>
-              <div class='w3-col s9 w3-tooltip'>Contact Trace & Test
-                 <i class="fa fa-info-circle" aria-hidden="true"></i>:
-                 <span class="w3-text">(<em>Per Contact</em>)</span>
-               </div>
-              <input id=costCT class='w3-round w3-col s3' type=number value=50></input>
-            </div>
-            <div class='w3-row'>
-              <div class='w3-col s9'>Mass Test:</div>
-              <input id=costUT class='w3-round w3-col s3' type=number value=50></input>
-            </div>
-            <div class='w3-row'>
-              <div class='w3-col s9'>Quarantine:</div>
-              <input id=costQ class='w3-round w3-col s3' type=number value=50></input>
-            </div>
+            <p class='w3-col s12'> Follow the links below for more information</p>
           </div>
         </div>
       </div>
@@ -213,40 +247,6 @@
               <div id=TTcVal></div>
             </div>
           </div>
-        </div>
-        <div class='w3-border w3-round w3-margin-top'>
-          <table class='w3-table-all w3-small w3-centered' style='color:black'>
-            <tr>
-              <th class='w3-border'>Policy Name</th>
-              <th class='w3-border' style="color:steelblue";>Plan A</th>
-              <th class='w3-border' style="color:red";>Plan B</th>
-              <th class='w3-border' style="color:green";>Plan C</th>
-            </tr>
-            <tr>
-              <td class='w3-border'>Transmission Risk (%)</td>
-              <td id=trA class='w3-border'></td>
-              <td id=trB class='w3-border'></td>
-              <td id=trC class='w3-border'></td>
-            </tr>
-            <tr>
-              <td class='w3-border'>Contact Rate</td>
-              <td id=crA class='w3-border'></td>
-              <td id=crB class='w3-border'></td>
-              <td id=crC class='w3-border'></td>
-            </tr>
-            <tr>
-              <td class='w3-border'>Mass Test (%)</td>
-              <td id=mtA class='w3-border'></td>
-              <td id=mtB class='w3-border'></td>
-              <td id=mtC class='w3-border'></td>
-            </tr>
-            <tr>
-              <td class='w3-border'>Trace & Trace (%)</td>
-              <td id=ttA class='w3-border'></td>
-              <td id=ttB class='w3-border'></td>
-              <td id=ttC class='w3-border'></td>
-            </tr>
-          </table>
         </div>
       </div>
     </div>
