@@ -62,7 +62,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
         i += 1  # move time
         timer = time.time() - time_start # update timer
     mod = model.t - model.d * model.inv_dt
-    # mod = 0
+    mod = 0
     date_range = pd.date_range(start= model.sim_start_day, periods= model.d, freq = 'D')
     # ^^ FROM XINMENG ... idk what this means
     # save results... this is used to restart a simulation on next loop
