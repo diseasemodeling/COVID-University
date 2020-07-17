@@ -171,18 +171,18 @@ class CovidModel():
             self.op_ob.travel_num_inf_plot[self.d] = np.sum(self.travel_num_inf[indx_l: indx_u])
 
             # number of quarantined equals to every 14 day interval of diagnosis
+            # if self.d <= 13:
+            #     self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1])
+            # else:
+            #     self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[(self.d -13) : (self.d + 1)])
             if self.d <= 13:
-                self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1])
-            else:
-                self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[(self.d -13) : (self.d + 1)])
-            """if self.d <= 13:
                 if self.pre_results == None:
                     self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1])
                 else:
                     i = 14 - self.d
                     self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1]) + np.sum(self.num_diag_hist[i:])
             else:    
-                self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[(self.d -13) : (self.d + 1)])"""
+                self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[(self.d -13) : (self.d + 1)])
             
             if  self.d == 0: 
                 self.op_ob.cumulative_cost_plot[self.d] = self.op_ob.cumulative_cost_plot[self.d]
