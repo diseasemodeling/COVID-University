@@ -91,7 +91,7 @@ class CovidModel():
             self.pre_results['self.num_base_test'] = np.array(self.pre_results['self.num_base_test'])
             # self.pre_results['self.op_ob.cumulative_cost_plot'] = np.array(self.pre_results['self.op_ob.cumulative_cost_plot'])
             # self.pre_results['self.tot_num_new_inf'] = np.array(self.pre_results['self.tot_num_new_inf'])
-            # self.pre_results['self.num_diag_hist']  = np.array(self.pre_results['self.num_diag_hist'])
+            self.pre_results['self.num_diag_hist']  = np.array(self.pre_results['self.num_diag_hist'])
             self.decision_making_day = gv.day_decison_making
             self.sim_start_day = self.pre_results['self.next_start_day']
             self.T_total = self.inv_dt * ((self.final_simul_end_date - self.sim_start_day).days + 1)

@@ -79,7 +79,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
            'self.tot_num_new_inf': model.tot_num_new_inf[model.t-mod],
            'self.op_ob.cumulative_cost_plot': model.op_ob.cumulative_cost_plot[model.d-1],
            'self.next_start_day': date_range[-1].strftime("%m/%d/%Y"),
-        #    'self.num_diag_hist': model.num_diag[(model.d-14): (model.d+1)],
+           'self.num_diag_hist': model.num_diag[(model.d-14): (model.d+1)],
            'self.t': model.t}
     # get results for graphics on website
     output = model.op_ob.write_current_results_mod()
