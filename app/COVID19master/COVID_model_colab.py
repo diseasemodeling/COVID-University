@@ -71,6 +71,7 @@ class CovidModel():
             self.decision_making_day = gv.day_decison_making
             self.sim_start_day = self.decision_making_day - timedelta(days = 1)
             self.T_total = self.inv_dt * gv.T_max
+            self.d_max = gv.T_max
             # initialize observation
             self.op_ob = op.output_var(sizeofrun =int(self.T_total/self.inv_dt) + 1, state = self.enter_state,\
                                    start_d = self.sim_start_day, decision_d = self.decision_making_day)
@@ -83,19 +84,20 @@ class CovidModel():
                                                                   dt.datetime.strptime(self.pre_results['self.next_start_day'], '%m/%d/%Y').month,
                                                                   dt.datetime.strptime(self.pre_results['self.next_start_day'], '%m/%d/%Y').day)
             self.pre_results['self.pop_dist_sim'] = np.array(self.pre_results['self.pop_dist_sim'])
-            self.pre_results['self.num_diag'] = np.array(self.pre_results['self.num_diag'])
+            # self.pre_results['self.num_diag'] = np.array(self.pre_results['self.num_diag'])
             self.pre_results['self.num_dead'] = np.array(self.pre_results['self.num_dead'])
             self.pre_results['self.num_hosp'] = np.array(self.pre_results['self.num_hosp'])
             self.pre_results['self.num_trac_test'] = np.array(self.pre_results['self.num_trac_test'])
             self.pre_results['self.num_uni_test'] = np.array(self.pre_results['self.num_uni_test'])
             self.pre_results['self.num_base_test'] = np.array(self.pre_results['self.num_base_test'])
-            self.pre_results['self.op_ob.cumulative_cost_plot'] = np.array(self.pre_results['self.op_ob.cumulative_cost_plot'])
-            self.pre_results['self.tot_num_new_inf'] = np.array(self.pre_results['self.tot_num_new_inf'])
-
+            # self.pre_results['self.cumulative_cost'] = np.array(self.pre_results['self.cumulative_cost'])
+            # self.pre_results['self.tot_num_new_inf'] = np.array(self.pre_results['self.tot_num_new_inf'])
+            self.pre_results['self.num_diag_hist'] = np.array(self.pre_results['self.num_diag_hist'])
+            
             self.decision_making_day = gv.day_decison_making
             self.sim_start_day = self.pre_results['self.next_start_day']
             self.T_total = self.inv_dt * ((self.final_simul_end_date - self.sim_start_day).days + 1)
-
+            self.d_max = (self.final_simul_end_date - self.sim_start_day).days + 1
             # initialize observation
             self.op_ob = op.output_var(sizeofrun =int(self.T_total/self.inv_dt) + 1, state = self.enter_state,\
                                    start_d = self.sim_start_day, decision_d = self.decision_making_day)
@@ -170,15 +172,20 @@ class CovidModel():
 
             self.op_ob.travel_num_inf_plot[self.d] = np.sum(self.travel_num_inf[indx_l: indx_u])
 
-            # number of quarantined equals to every 14 day interval of diagnosis
-            if self.d <= 13:
-                self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1])
-            else:
-                self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[(self.d -13) : (self.d + 1)])
-            if  self.d == 0: 
-                self.op_ob.cumulative_cost_plot[self.d] = self.op_ob.cumulative_cost_plot[self.d]
-            else:
-                self.op_ob.cumulative_cost_plot[self.d] =  self.op_ob.cumulative_cost_plot[self.d - 1] + self.op_ob.tot_test_cost_plot[self.d] + self.op_ob.num_quarantined_plot[self.d] * self.cost_tst[3]/1000000
+            self.op_ob.num_quarantined_plot[self.d] = self.num_quarantined[self.d]
+            self.op_ob.quarantine_cost_plot[self.d] = self.cost_quarantine[self.d] #np.sum(self.cost_quarantine[indx_l: indx_u])    # cost of quarantine
+            self.op_ob.cumulative_cost_plot[self.d] = self.cumulative_cost[self.t]
+
+            """ # number of quarantined equals to every 14 day interval of diagnosis
+                if self.d <= 13 and data == None:
+                    self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[:self.d + 1])
+                else:
+                    self.op_ob.num_quarantined_plot[self.d] = np.sum(self.op_ob.num_inf_plot[(self.d -13) : (self.d + 1)])
+                if  self.d == 0: 
+                    self.op_ob.cumulative_cost_plot[self.d] = self.op_ob.cumulative_cost_plot[self.d]
+                else:
+                    self.op_ob.cumulative_cost_plot[self.d] =  self.op_ob.cumulative_cost_plot[self.d - 1] + self.op_ob.tot_test_cost_plot[self.d] + self.op_ob.num_quarantined_plot[self.d] * self.cost_tst[3]/1000000"""
+            
             self.d += 1 # update day
 
     # Function to convert action
@@ -222,6 +229,12 @@ class CovidModel():
         self.cost_test_c[self.t] =  self.dt * self.cost_tst[1] * self.T_c /million
         self.cost_test_u[self.t] =  self.dt * self.cost_tst[2] * self.T_u / million
         self.Final_TST[self.t] = self.cost_test_u[self.t] + self.cost_test_c[self.t] + self.cost_test_b[self.t]
+        
+        self.cost_quarantine[self.d] = self.num_quarantined[self.d] * self.cost_tst[3]/million
+        if self.t % self.inv_dt ==0 : 
+            self.cumulative_cost[self.t] = self.cumulative_cost[self.t-1] + self.Final_TST[self.t] + self.Final_VSL[self.t]  + self.cost_quarantine[self.d]
+        else:
+            self.cumulative_cost[self.t] = self.cumulative_cost[self.t-1] + self.Final_TST[self.t] + self.Final_VSL[self.t]
 
     # Function to modify current population distribution
     def new_inf_to_pop(self):
@@ -394,7 +407,7 @@ class CovidModel():
 
     def summarize_epidemic(self):
         # the total number of diagnosis
-        self.num_diag[self.t] = self.num_base_test[self.t] + self.num_trac_test[self.t] + self.num_uni_test[self.t]
+        self.num_diag[self.t] = np.sum(self.num_base_test[self.t] + self.num_trac_test[self.t] + self.num_uni_test[self.t])
 
         ########## output age group based results #######
         self.tot_hosp_AgeGroup1[self.t] = np.sum(self.num_hosp[self.t, :,:25])
@@ -422,7 +435,22 @@ class CovidModel():
 
         self.num_diag_inf[self.t] = np.sum(self.pop_dist_sim[self.t,:,:,4:7])   # Q_L + Q_E + Q_I
         self.num_undiag_inf[self.t] = np.sum(self.pop_dist_sim[self.t,:,:,1:4]) # L + E + I
-
+        
+        if self.pre_results == 0:
+            if self.t <= 14 * self.inv_dt:  
+                self.num_quarantined[self.d] = np.sum(self.num_diag[:self.t + 1])
+            else:
+                indx_l = self.t - 14 * self.inv_dt  + 1# = self.t
+                indx_u = self.t + 1  # = self.t + 1
+                self.num_quarantined[self.d] = np.sum(self.num_diag[indx_l:indx_u])  
+        else:
+            if self.t <= 14 * self.inv_dt:
+                i = 14 - self.d  
+                self.num_quarantined[self.d] = np.sum(self.num_diag[:self.t + 1]) + self.num_diag_hist[i:]
+            else:
+                indx_l = self.t - 14 * self.inv_dt  + 1# = self.t
+                indx_u = self.t + 1  # = self.t + 1
+                self.num_quarantined[self.d] = np.sum(self.num_diag[indx_l:indx_u])  
 
     # Function to run simulate results until start of decision making
     # Only assign a certain number of initial infected to the population
@@ -456,7 +484,7 @@ class CovidModel():
         self.rate_array = np.zeros([16 ,1])                                              # initialize rate array
 
         # Initialize measures for epidemics
-        self.num_diag = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of diagnosis
+        self.num_diag = np.zeros((self.T_total + 1))#np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of diagnosis
         self.num_dead = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of deaths
         self.num_hosp = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of hospitalizations
         self.num_new_inf = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))     # number of newly infection
@@ -508,7 +536,12 @@ class CovidModel():
         self.cost_test_u = np.zeros(self.T_total + 1)                                   # cost of universal testing
         self.cost_test_c = np.zeros(self.T_total + 1)                                   # cost of contact and tracing
         self.cost_test_b = np.zeros(self.T_total + 1)                                   # cost of symptom-based testing
-        # self.rate_unemploy = np.zeros(self.T_total + 1)
+        
+        self.cumulative_cost =  np.zeros(self.T_total + 1)                              # cumulative cost
+        self.num_quarantined =  np.zeros(self.d_max + 1)                                # number of quarantined
+        self.cost_quarantine =  np.zeros(self.d_max + 1)                                # cost of quarantine
+        self.num_diag_hist = np.zeros(14)           
+
         self.policy = np.zeros((self.T_total + 1, 3))                                   # decision choices
         self.travel_num_inf = np.zeros(self.T_total + 1)
 
@@ -525,11 +558,9 @@ class CovidModel():
         self.tot_num_dead[0] = self.pre_results['self.tot_num_dead']
         self.tot_num_hosp[0] = self.pre_results['self.tot_num_hosp']
         self.tot_num_new_inf[0] = self.pre_results['self.tot_num_new_inf']
-        self.op_ob.cumulative_cost_plot[0] = self.pre_results['self.op_ob.cumulative_cost_plot']
+        self.cumulative_cost[0] = self.pre_results['self.cumulative_cost']
+        self.num_diag_hist = np.copy(self.pre_results['self.num_diag_hist'])
         
-
-
-
 
     # Function to intialize simulation
     # Input parameter:
@@ -541,7 +572,7 @@ class CovidModel():
         self.rate_array = np.zeros([16 ,1])                                              # initialize rate array
 
         # Initialize measures for epidemics
-        self.num_diag = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of diagnosis
+        self.num_diag = np.zeros((self.T_total + 1))#np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of diagnosis
         self.num_dead = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of deaths
         self.num_hosp = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))        # number of hospitalizations
         self.num_new_inf = np.zeros((self.T_total + 1, self.tot_risk, self.tot_age))     # number of newly infection
@@ -593,7 +624,11 @@ class CovidModel():
         self.cost_test_u = np.zeros(self.T_total + 1)                                   # cost of universal testing
         self.cost_test_c = np.zeros(self.T_total + 1)                                   # cost of contact and tracing
         self.cost_test_b = np.zeros(self.T_total + 1)                                   # cost of symptom-based testing
-        # self.rate_unemploy = np.zeros(self.T_total + 1)
+        
+        self.cumulative_cost =  np.zeros(self.T_total + 1)                              # cumulative cost
+        self.num_quarantined =  np.zeros(self.d_max + 1)                                # number of quarantined
+        self.cost_quarantine =  np.zeros(self.d_max + 1)                                # cost of quarantine
+
         self.policy = np.zeros((self.T_total + 1, 3))                                   # decision choices
         self.travel_num_inf = np.zeros(self.T_total + 1)                                # number of infected among travelers
 
