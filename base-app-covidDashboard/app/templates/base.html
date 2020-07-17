@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>COVID-19 - University Simulator</title>
+  {% assets "d3_viz" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+  {% assets "home_css" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}" />
+  {% endassets %}
+</head>
+<meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0'>
+<!-- Fonts -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src='https://cdnjs.com/libraries/d3-legend'></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://unpkg.com/d3-foresight"></script>
+<div>
+  <div class="w3-bar" style="background-color:#17202A; color:white;">
+    <span class="w3-bar-item w3-display-topmiddle">COVID-19 University Simulator</span>
+    <a href="{{ url_for('blueprint.index') }}" class="w3-bar-item w3-button w3-border-bottom w3-margin-right"> Home</a>
+  </div>
+  <div class='w3-col s12'>{% block content %}{% endblock %}</div>
+  <footer class='w3-bottom-middle' style="background-color:#17202A; color:white; position: absolute; bottom: 0; width: 100%; height: 2.6rem;">
+    <div class='w3-display-bottommiddle'>
+    <a href='https://diseasemodeling.github.io/COVID19/' class="w3-bar-item w3-button w3-border-top"> About This Project</a>
+    <a href='https://github.com/diseasemodeling/COVID19' class='w3-bar-item w3-button w3-border-top'> Our Github</a>
+    <a href='https://blogs.umass.edu/chaitrag/chaitra-gopalappa/' class='w3-bar-item w3-button w3-border-top'> Our Team</a>
+  </footer>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>
