@@ -44,7 +44,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
     gv.test_cost = costs
     # distribution the simulation population by age and gender
     gv.pop_dist_v = gv.read_pop_dist(state, pop_size, path = path, heroku = heroku)
-    gv.T_max = abs((decision_making_date.date() - final_simul_end_date.date()).days)
+    gv.T_max = abs((decision_making_date.date() - final_simul_end_date.date()).days) + 1
     # ^ set gloable variables
     timer, time_start = 0, time.time() # set timer and current time
     model = cov.CovidModel(data=data, heroku=heroku) # establish model
