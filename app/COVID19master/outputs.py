@@ -1,6 +1,6 @@
-# Good source for annotation: http://members.cbio.mines-paristech.fr/~nvaroquaux/tmp/matplotlib/examples/pylab_examples/annotation_demo2.html
 import numpy as np
 import pandas as pd
+
 
 class output_var:
 
@@ -37,6 +37,25 @@ class output_var:
         self.T_u_plot = np.zeros(sizeofrun)                     # number of universal testing needed
 
         self.travel_num_inf_plot = np.zeros(sizeofrun)          # number of travel related infection 
+        
+
+        # number of hospitalization and deaths by age group
+        self.tot_hosp_AgeGroup1_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup2_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup3_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup4_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup5_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup6_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup7_plot = np.zeros(sizeofrun)
+        self.tot_hosp_AgeGroup8_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup1_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup2_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup3_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup4_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup5_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup6_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup7_plot = np.zeros(sizeofrun)
+        self.tot_dead_AgeGroup8_plot = np.zeros(sizeofrun)
 
     
         # define some parameters for plotting
@@ -45,8 +64,9 @@ class output_var:
         self.decision_d = decision_d   # date of starting decsion making 
         self.date_range = pd.date_range(start = self.start_d, periods= sizeofrun, freq = 'D')  # date range
        
-
-
+     
+        
+    # Function to output scenario analysis needed results 
     def write_scenario_needed_results(self):
         df = pd.DataFrame({'Date': self.date_range[1:],
                            'Value of statistical life-year (VSL) loss': self.VSL_plot[1:],
@@ -98,3 +118,40 @@ class output_var:
                            
                            })
         return df
+
+    def write_summary_results(self, df, p, c, a_c,  SAR, R0, a_u, unit_cost, num_init_trace, table_num, pop_size):   
+        # summary file
+        df2 = pd.DataFrame({'Transmission risk': p,
+                            'Contact rate - average contacts per person per day': c,
+                            'Percentage through contact trace and tests': a_c,
+                            'Percentage through mass tests': a_u,
+                            'Unit cost of symptom-based tests': unit_cost[0],
+                            'Unit cost of contact trace and tests': unit_cost[1],
+                            'Unit cost of mass tests': unit_cost[2],
+                            'Unit cost of quarantine': unit_cost[3],
+                            'Number diagnosed for tracing initiation':num_init_trace,
+                            'Population size': pop_size,
+                            'R0': R0,
+                            'Second attack rate': SAR,
+                            'Cumulative value of statistical life-year (VSL) loss': df['Value of statistical life-year (VSL) loss'].sum(),
+                            'Cumulative number of contact trace and tests needed': df['Number of trace and tests'].sum(),
+                            'Cumulative number of mass tests needed': df['Number of mass tests'].sum(),
+                            'Cumulative diagnosis through contact trace and tests': df['Number of new diagnosis through contact trace and tests'].sum(),
+                            'Cumulative diagnosis through symptom-based tests': df['Number of new diagnosis through symptom-based tests'].sum(),
+                            'Cumulative diagnosis through mass tests': df['Number of new diagnosis through mass tests'].sum(),
+                            'Cumulative diagnosis': df['Cumulative diagnosis'][-1:].to_numpy()[0],
+                            'Cumulative hospitalized': df['Cumulative hospitalized'][-1:].to_numpy()[0],
+                            'Cumulative deaths': df['Cumulative deaths'][-1:].to_numpy()[0], 
+                            'Cumulative cases (diagnosed and undiagnosed)': df['Cumulative cases (diagnosed and undiagnosed)'][-1:].to_numpy()[0],
+                            'Peak contact trace and tests': df['Number of trace and tests'].max(),
+                            'Peak quarantined': df['Number of quarantined (only true positives)'].max(),
+                            'Cumulative quarantined': df['Number of quarantined (only true positives)'].sum(),
+                            'Cumulative costs': df['Cumulative costs'][-1:].to_numpy()[0],
+                            'Cumulative costs of testing': df['Total cost of tests'].sum(),
+                            'Table': table_num},
+                            index=[0])     
+             
+        return df2
+    
+
+ 
