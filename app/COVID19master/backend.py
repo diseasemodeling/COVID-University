@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 import time, os, json, copy
+try:
+    import cPickle as pickle
+except ModuleNotFoundError:
+    import pickle
 
 from app.COVID19master import global_var as gv
 from app.COVID19master import COVID_model_colab as cov
@@ -27,7 +31,55 @@ def read_ABC(from_java):
     return rl_input
 
 
-# Funtion for one scenario analysis
+def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
+             init_num_inf = 0, travel_num_inf = 0.5, startSim = '2020-08-24', 
+             endSim = '2020-11-20', trans_prob=0.249,  num_to_init_trace = 20, 
+             data = None, pre_data = None, filename = None,
+             heroku=False, max_time=25): # e.g. filename = 'model.pkl'
+    path = os.getcwd()         
+    inv_dt = 10                 # insert time steps within each day
+
+    decision_making_date = pd.Timestamp(startSim)      # date of starting decision making
+    final_simul_end_date = pd.Timestamp(endSim)   # date of last simulation date
+    sim_week = final_simul_end_date.week - decision_making_date.week + 1
+    gv.setup_global_variables(state, inv_dt, init_num_inf, decision_making_date.date(),
+                              travel_num_inf,sim_week, pop_size, trans_prob, num_to_init_trace,
+                              path, heroku = heroku)
+    gv.test_cost = costs
+    # distribute the simulation population by age and gender
+    gv.pop_dist_v = gv.read_pop_dist(state, pop_size, path = path, heroku = heroku)
+    gv.T_max = abs((decision_making_date.date() - final_simul_end_date.date()).days) + 1
+    # ^ set gloable variables
+    timer, time_start = 0, time.time() # set timer and current time
+    try :
+        with open(filename , 'rb') as input:
+            model = pickle.load(input) # load model
+            print('loading')
+    except:
+        model = cov.CovidModel(heroku=heroku) # establish model
+        print('initializing')
+    i = 0 # set loop counter
+    d_m = decision[i] # set current policy at time=now
+    while model.t < model.T_total and (timer < max_time or i % model.inv_dt != 0):
+        # while there time now < time end AND
+        # while timer < max_time AND
+        # while if time_step is at the end of a day (aka no partial days)
+        model.t += 1
+        if model.t % 25 == 0: print('t', model.t, np.round(timer, 2)) # print progress
+        if i % model.inv_dt == 0 and i//model.inv_dt < len(decision): # if next day, set policy for the new day
+            d_m = decision[i//model.inv_dt]
+        model.step(action_t = d_m) # run step
+        i += 1  # move time
+        timer = time.time() - time_start # update timer
+    
+    with open(filename, 'wb') as output:  # Overwrites any existing file.
+        pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)
+    
+    if model.t == model.T_total:
+        output = model.op_ob.write_scenario_needed_results()
+        return output
+
+"""# Funtion for one scenario analysis
 def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
              init_num_inf = 0, travel_num_inf = 0.5, startSim = '2020-08-24', 
              endSim = '2020-11-20', trans_prob=0.249, data=None, pre_data = None,
@@ -44,7 +96,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
     gv.test_cost = costs
     # distribution the simulation population by age and gender
     gv.pop_dist_v = gv.read_pop_dist(state, pop_size, path = path, heroku = heroku)
-    gv.T_max = abs((decision_making_date.date() - final_simul_end_date.date()).days)
+    gv.T_max = abs((decision_making_date.date() - final_simul_end_date.date()).days) + 1
     # ^ set gloable variables
     timer, time_start = 0, time.time() # set timer and current time
     model = cov.CovidModel(data=data, heroku=heroku) # establish model
@@ -97,7 +149,7 @@ def main_run(state, decision, T_max, pop_size = 38037, costs=[50,50,50,50],
                'endSim':endSim}
     results = prep_results_for_java(results, pre_data)
     # ^^ prep results for java
-    return results
+    return results"""
 
 
 def prep_results_for_java(results, prior_results=None):
