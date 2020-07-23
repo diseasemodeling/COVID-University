@@ -32,6 +32,7 @@ def prep_sim():
         rl_input = backend.read_ABC(get)
         # transform user inputs... will return
         results = {plan:{'is_complete':'False',
+                         'load_pickle':'False',
                          'remaining_decision':decision,
                          'to_java':None,
                          'pre_data':None,
@@ -49,7 +50,8 @@ def prep_sim():
     # take the partially completed simulation data and prep it.
         results = backend.prep_input_for_python(get)
     heroku = False if len(os.getcwd()) > 25 else True # set the paths
-    max_time = 20 # passed to simulation as the max time to run for
+    max_time = 10 # passed to simulation as the max time to run for
+    print(max_time, "max_time")
     stop=False # condition to make sure simulation loop does not start another plan
     for plan, instructions in results.items(): # for plan in [A,B,C]
         if type(instructions) == dict:
@@ -59,6 +61,7 @@ def prep_sim():
                 output = backend.main_run(state=instructions['state'],
                                           decision = decision,
                                           T_max = decision.shape[0],
+                                          data = instructions,
                                           pop_size = instructions['pop_size'],
                                           costs = instructions['cost'],
                                           init_num_inf =instructions['init_num_inf'],
@@ -66,8 +69,6 @@ def prep_sim():
                                           startSim = instructions['startSim'],
                                           endSim = instructions['endSim'],
                                           trans_prob = instructions['trans_prob'],
-                                          data=instructions['pre_data'],
-                                          pre_data=instructions['to_java'],
                                           heroku=heroku,
                                           max_time=max_time)
                 # ^ run simulation... will end after 15 seconds, or if simulation
