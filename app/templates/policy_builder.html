@@ -29,6 +29,10 @@
           <div class='w3-col s8'>Infections from outside contacts (per day):</div>
           <input id=outsideInfections class='w3-round w3-col s4' type=number value=10></input>
         </div>
+        <div class='w3-row'>
+          <div class='w3-col s8'>Infections until Trace & Test:</div>
+          <input id=initTrace class='w3-round w3-col s4' type=number value=20></input>
+        </div>
       </div>
       <h4 class='w3-border-top' style='text-align:center'> Unit Costs (Per Person)</h4>
       <div>
@@ -161,14 +165,14 @@
             <div class=w3-row>
               <div id=CRaLabel class='w3-col s5'>Contact Rate: </div>
               <div class="w3-col s5">
-                1 <input id=CRa type="range" min="1" max="25" value="15" class="slider" onchange='updateSliderOverview()'>25
+                1 <input id=CRa type="range" min="1" max="25" value="7" class="slider" onchange='updateSliderOverview()'>25
               </div>
               <div id=CRaVal></div>
             </div>
             <div class=w3-row>
               <div id=MTaLabel class='w3-col s5'>Mass Test (%): </div>
               <div class="w3-col s5">
-                0 <input id=MTa type="range" min="0" max="100" value="50" class="slider" onchange='updateSliderOverview()'>100
+                0 <input id=MTa type="range" min="0" max="100" value="5" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=MTaVal></div>
             </div>
@@ -194,14 +198,14 @@
             <div class=w3-row>
               <div id=CRbLabel class='w3-col s5'>Contact Rate: </div>
               <div class="w3-col s5">
-                1 <input id=CRb type="range" min="1" max="25" value="15" class="slider" onchange='updateSliderOverview()'>25
+                1 <input id=CRb type="range" min="1" max="25" value="10" class="slider" onchange='updateSliderOverview()'>25
               </div>
               <div id=CRbVal></div>
             </div>
             <div class='w3-row'>
               <div id=MTbLabel class='w3-col s5'>Mass Test (%): </div>
               <div class="w3-col s5">
-                0 <input id=MTb type="range" min="0" max="100" value="25" class="slider" onchange='updateSliderOverview()'>100
+                0 <input id=MTb type="range" min="0" max="100" value="10" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=MTbVal></div>
             </div>
@@ -235,14 +239,14 @@
             <div class='w3-row'>
               <div id=MTcLabel class='w3-col s5'>Mass Test (%): </div>
               <div class="w3-col s5">
-                0 <input id=MTc type="range" min="0" max="100" value="50" class="slider" onchange='updateSliderOverview()'>100
+                0 <input id=MTc type="range" min="0" max="100" value="15" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=MTcVal></div>
             </div>
             <div class='w3-row'>
               <div id=TTcLabel class='w3-col s5'>Trace & Test (%): </div>
               <div class="w3-col s5">
-                0 <input id=TTc type="range" min="0" max="100" value="50" class="slider" onchange='updateSliderOverview()'>100
+                0 <input id=TTc type="range" min="0" max="100" value="25" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=TTcVal></div>
             </div>
@@ -372,6 +376,7 @@ function data_for_sim(){
                'popSize':document.getElementById('popSize').value,
                'initialInfection':document.getElementById('initialInfections').value,
                'outsideInfection':document.getElementById('outsideInfections').value,
+               'num_to_init_trace':document.getElementById('initTrace').value,
                'new':'True'}
   return to_python
 }

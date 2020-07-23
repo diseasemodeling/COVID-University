@@ -17,7 +17,7 @@ def read_ABC(from_java):
         for plan, array in policy.items():
             data[plan][name] = array
     plans = ['A', 'B', 'C']
-    policies = ['CR', 'MT', 'TT']
+    policies = ['CR', 'TT', 'MT']
     index = [i for i in range(num_days+1)]
     rl_input = {}
     for plan in plans:
@@ -30,10 +30,11 @@ def read_ABC(from_java):
         rl_input[plan] = rl_input[plan].values
     return rl_input
 
-def main_run(state, decision, T_max, data, pop_size = 38037, costs=[50,50,50,50],
-             init_num_inf = 0, travel_num_inf = 0.5, startSim = '2020-08-24', 
-             endSim = '2020-11-20', trans_prob=0.249,  num_to_init_trace = 20, 
-             filename = 'model.pkl', heroku=False, max_time=25): # e.g. filename = 'model.pkl'
+def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
+             costs=[50,50,50,50], init_num_inf = 0, travel_num_inf = 0.5,
+             startSim = '2020-08-24', endSim = '2020-11-20', trans_prob=0.249,
+             num_to_init_trace = 20, filename = 'model.pkl', heroku=False,
+             max_time=25): # e.g. filename = 'model.pkl'
     path = os.getcwd()         
     inv_dt = 10                 # insert time steps within each day
 
@@ -44,6 +45,16 @@ def main_run(state, decision, T_max, data, pop_size = 38037, costs=[50,50,50,50]
             model = pickle.load(input) # load model
             print('loading')
     else:
+        if data != None:
+            pop_size = data['pop_size']
+            costs = data['costs']
+            startSim = data['startSim']
+            endSim = data['endSim']
+            init_num_inf = data['init_num_inf']
+            travel_num_inf = data['travel_num_inf']
+            trans_prob = data['trans_prob']
+            num_to_init_trace = data['num_to_init_trace']
+            state = data['state']
         decision_making_date = pd.Timestamp(startSim)      # date of starting decision making
         final_simul_end_date = pd.Timestamp(endSim)   # date of last simulation date
         sim_week = final_simul_end_date.week - decision_making_date.week + 1
@@ -80,6 +91,8 @@ def main_run(state, decision, T_max, data, pop_size = 38037, costs=[50,50,50,50]
     data['to_java'] = output
     data = prep_results_for_java(data)
     
+    while timer < 3:
+        timer = time.time() - time_start
     with open(filename, 'wb') as output:  # Overwrites any existing file.
         pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)
     
@@ -102,7 +115,7 @@ def prep_results_for_java(results, prior_results=None):
         #    temp = prior_results.append(temp, ignore_index=True)
         results['to_java'] = json.dumps(temp.astype(str).to_dict('index'))
     results['remaining_decision'] = json.dumps(results['remaining_decision'].tolist())
-    results['cost'] = json.dumps(results['cost'])
+    results['costs'] = json.dumps(results['costs'])
     results['pop_size'] = json.dumps(results['pop_size'])
     results['trans_prob'] = json.dumps(results['trans_prob'])
     results['init_num_inf'] = json.dumps(results['init_num_inf'])
@@ -123,7 +136,7 @@ def prep_input_for_python(results):
                 instructions['to_java'] = None
             instructions['remaining_decision'] = np.array(json.loads(instructions['remaining_decision']))
             instructions['pre_data'] = json.loads(instructions['pre_data'])
-            instructions['cost'] = json.loads(instructions['cost'])
+            instructions['costs'] = json.loads(instructions['costs'])
             instructions['pop_size'] = json.loads(instructions['pop_size'])
             instructions['trans_prob'] = json.loads(instructions['trans_prob'])
             instructions['init_num_inf'] = json.loads(instructions['init_num_inf'])
@@ -145,7 +158,7 @@ def prep_input_excel(results):
             to_excel[key] = {}
             for point, value in plan.items():
                 if point not in dont_include:
-                    if point == 'cost':
+                    if point == 'costs':
                         value = json.loads(value)
                         for i, cost in enumerate(value):
                             print(i, cost)

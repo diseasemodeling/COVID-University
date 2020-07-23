@@ -36,13 +36,14 @@ def prep_sim():
                          'remaining_decision':decision,
                          'to_java':None,
                          'pre_data':None,
-                         'cost':[int(cost) for cost in get['cost']],
+                         'costs':[int(cost) for cost in get['cost']],
                          'pop_size':int(get['popSize']),
                          'init_num_inf':int(get['initialInfection']),
                          'travel_num_inf':float(get['outsideInfection']),
                          'startSim': get['start'],
                          'endSim':get['end'],
                          'state':get['state'],
+                         'num_to_init_trace':int(get['num_to_init_trace']),
                          'trans_prob':float(get['policy']['TR'][plan]) / 100}
                    for plan, decision in rl_input.items()}
     else:
@@ -50,7 +51,7 @@ def prep_sim():
     # take the partially completed simulation data and prep it.
         results = backend.prep_input_for_python(get)
     heroku = False if len(os.getcwd()) > 25 else True # set the paths
-    max_time = 10 # passed to simulation as the max time to run for
+    max_time = 5 # passed to simulation as the max time to run for
     print(max_time, "max_time")
     stop=False # condition to make sure simulation loop does not start another plan
     for plan, instructions in results.items(): # for plan in [A,B,C]
@@ -58,17 +59,9 @@ def prep_sim():
             # if simulation isn't done, and stop condition not set yet
             if instructions['is_complete'] == 'False' and stop == False:
                 decision = instructions['remaining_decision']
-                output = backend.main_run(state=instructions['state'],
-                                          decision = decision,
+                output = backend.main_run(decision = decision,
                                           T_max = decision.shape[0],
                                           data = instructions,
-                                          pop_size = instructions['pop_size'],
-                                          costs = instructions['cost'],
-                                          init_num_inf =instructions['init_num_inf'],
-                                          travel_num_inf =instructions['travel_num_inf'],
-                                          startSim = instructions['startSim'],
-                                          endSim = instructions['endSim'],
-                                          trans_prob = instructions['trans_prob'],
                                           heroku=heroku,
                                           max_time=max_time)
                 # ^ run simulation... will end after 15 seconds, or if simulation

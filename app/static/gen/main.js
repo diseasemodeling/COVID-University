@@ -794,7 +794,7 @@ function makeSimLine(parentName, SVG_name, dataType=null, simA=null, simB=null, 
 
     if (dataType == 'Number of quarantined (per day)(with 0% false positives)'){
       title = 'Number of quarantines (onlty true positives)'
-    } else if (dataType == 'Cumulative cost'){
+    } else if (dataType == 'Cumulative costs'){
       title = 'Cumulative cost ($, Millions)'
     } else {
       title = dataType
