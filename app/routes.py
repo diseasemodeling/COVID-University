@@ -1,13 +1,9 @@
-from flask import (Blueprint, flash, redirect, render_template, request,
-                   url_for, jsonify, Response, send_file, make_response)
+from flask import (Blueprint, render_template, request, jsonify, send_file)
 from app.COVID19master import backend
 import os
 import pandas as pd
-import xlsxwriter
 
 bp = Blueprint('blueprint', __name__)
-
-
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
@@ -18,7 +14,6 @@ def index():
 @bp.route('/download_newfile')
 def download_newfile():
     path = 'results.xlsx'
-    #return send_file(path, attachment_filename='results.xlsx', as_attachment=True)
     return send_file(path, attachment_filename='simulationResults.xlsx',
                      as_attachment=True, cache_timeout=0)
 
@@ -75,7 +70,6 @@ def prep_sim():
     if all([v['is_complete'] == 'True' for k,v in results.items() if type(v) == dict]):
         status = 'Finished'
         inputs = backend.prep_input_excel(results)
-        print(inputs)
         # Create a Pandas Excel writer using XlsxWriter as the engine.
         if heroku == False:
             writer = pd.ExcelWriter('app\\results.xlsx', engine='xlsxwriter')
@@ -83,11 +77,20 @@ def prep_sim():
             writer = pd.ExcelWriter('app/results.xlsx', engine='xlsxwriter')
         # Write each dataframe to a different worksheet.
         inputs.to_excel(writer, sheet_name='Simulation Inputs')
-        pd.read_json(results['A']['to_java']).T.to_excel(writer, sheet_name='Plan A')
+        df = pd.read_json(results['A']['to_java']).T
+        df = df.set_index('Date')
+        df = df.astype(float)
+        df.to_excel(writer, sheet_name='Plan A')
         if 'B' in results.keys():
-            pd.read_json(results['B']['to_java']).T.to_excel(writer, sheet_name='Plan B')
+            df = pd.read_json(results['B']['to_java']).T
+            df = df.set_index('Date')
+            df = df.astype(float)
+            df.to_excel(writer, sheet_name='Plan B')
         if 'C' in results.keys():
-            pd.read_json(results['C']['to_java']).T.to_excel(writer, sheet_name='Plan C')
+            df = pd.read_json(results['C']['to_java']).T
+            df = df.set_index('Date')
+            df = df.astype(float)
+            df.to_excel(writer, sheet_name='Plan C')
         writer.save() 
     else:
         status = 'Not Finished'

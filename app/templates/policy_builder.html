@@ -30,7 +30,10 @@
           <input id=outsideInfections class='w3-round w3-col s4' type=number value=10></input>
         </div>
         <div class='w3-row'>
-          <div class='w3-col s8'>Infections until Trace & Test:</div>
+          <div class='w3-col s8 w3-tooltip'>Trace and test initiation (# of cases)
+            <i class="fa fa-info-circle" aria-hidden="true"></i>:
+            <span class="w3-text">(<em>Condition for trace and test initiation (# diagnosed cases)</em>)</span>
+          </div>
           <input id=initTrace class='w3-round w3-col s4' type=number value=20></input>
         </div>
       </div>
@@ -41,7 +44,7 @@
           <input id=costSB class='w3-round w3-col s3' type=number value=50></input>
         </div>
         <div class='w3-row'>
-          <div class='w3-col s9 w3-tooltip'>Contact Trace & Test
+          <div class='w3-col s9 w3-tooltip'>Contact Trace and Test
              <i class="fa fa-info-circle" aria-hidden="true"></i>:
              <span class="w3-text">(<em>Per Contact</em>)</span>
            </div>
@@ -57,7 +60,8 @@
         </div>
       </div>
       <div class='w3-border w3-round w3-margin-top'>
-        <table class='w3-table-all w3-small w3-centered' style='color:black'>
+        <h4 style='text-align:center'> Policy Overview </h4>
+        <table class='w3-table-all w3-tiny w3-centered' style='color:black'>
           <tr>
             <th class='w3-border'>Policy Name</th>
             <th class='w3-border' style="color:steelblue";>Plan A</th>
@@ -65,30 +69,31 @@
             <th class='w3-border' style="color:green";>Plan C</th>
           </tr>
           <tr>
-            <td class='w3-border'>Transmission Risk (%)</td>
+            <td class='w3-border'>Transmission risk (%)*</td>
             <td id=trA class='w3-border'></td>
             <td id=trB class='w3-border'></td>
             <td id=trC class='w3-border'></td>
           </tr>
           <tr>
-            <td class='w3-border'>Contact Rate</td>
+            <td class='w3-border'>Contact rate*</td>
             <td id=crA class='w3-border'></td>
             <td id=crB class='w3-border'></td>
             <td id=crC class='w3-border'></td>
           </tr>
           <tr>
-            <td class='w3-border'>Mass Test (%)</td>
+            <td class='w3-border'>Mass test (%)*</td>
             <td id=mtA class='w3-border'></td>
             <td id=mtB class='w3-border'></td>
             <td id=mtC class='w3-border'></td>
           </tr>
           <tr>
-            <td class='w3-border'>Trace & Trace (%)</td>
+            <td class='w3-border'>Trace and test rate (%)*</td>
             <td id=ttA class='w3-border'></td>
             <td id=ttB class='w3-border'></td>
             <td id=ttC class='w3-border'></td>
           </tr>
         </table>
+        <div class='w3-container'> * - All rates are per day</div>
       </div>
     </div>
     <div class='w3-border w3-panel w3-round w3-blue-grey' style="height:7.5vh">
@@ -106,89 +111,91 @@
           <h2 style='text-align:center; margin-bottom:0px'><u>Introduction & Guide</u></h2>
           <div class='w3-row'>
             <p class='w3-col s12'> This is a simulation tool for evaluation of epidemic
-               outcomes upon reopening of a residential university, under varying scenarios
+              outcomes upon reopening of a residential university, under varying scenarios
               of transmission risk, contact rates, mass test, and trace and test.
-               Enter initial population data (on the left) and scenarios (on the right)</p>
+              Enter initial population data (on the left) and scenarios (on the right).</p>
           </div>
           <div class='w3-row w3-border'>
             <h3 style='text-align:center'> Descriptions (Inital Population Data) </h3>
             <p class='w3-col s4'> Initial infections: </p>
-            <p class='w3-col s8'>  Expected number of persons with undiagnosed infection on day 1 of reopening </p>
+            <p class='w3-col s8'> Expected number of persons with undiagnosed infection on day 1 of reopening. </p>
             <p class='w3-col s4'> Infections from outside contacts (per day): </p>
             <p class='w3-col s8'> Expected number of infections through contacts with
                                   persons from outside the university population over
-                                   the duration of the semester (per day) </p>
+                                   the duration of the semester (per day). </p>
+            <p class='w3-col s4'> Trace and test initiation (number cases): </p>
+            <p class='w3-col s8'> Number of diagnosed cases before initiating trace and test. <br><br></p>
             <p class='w3-col s4'> Unit costs: </p>
-            <p class='w3-col s8'>  Cost per person (could include costs of equipment, infrastructure, personnel, etc.) </p>
+            <p class='w3-col s8'>  Cost per person (could include costs of equipment, infrastructure, personnel, etc.). </p>
             <p class='w3-col s12'> (Assumption: we assume persons diagnosed with infection are quarantined and isolated)</p>
           </div>
           <div class='w3-row w3-border'>
             <h3 style='text-align:center'> Descriptions (Scenarios) </h3>
-            <p class='w3-col s3'> Transmission Risk (%): </p>
+            <p class='w3-col s3'> Transmission risk (% per day): </p>
             <p class='w3-col s9 w3-tooltip'> The chance of transmission per contact per day.
-               Suggested estimates to use:  <br>Baseline: 14% (11.6% - 17%); <br>
-                With facemask-use: 7.8% (5.6% -11.1%); <br>
-                With 6ft distancing: 2.8% ( 1.4% - 5.7%); <br>
+               Suggested estimates to use:  <br>
+               Baseline: 14% (11.6% - 17%); <br>
+               With facemask-use: 7.8% (5.6% -11.1%); <br>
+               With 6ft distancing: 2.8% ( 1.4% - 5.7%).
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                 <span class="w3-text">(<em>Estimated using: Relative risk from face mask use in
                 non-healthcare settings: 0.56 (0.40 - 0.79); <br>
                 Relative risk for every 1m distancing: 0.49 (0.26 – 0.93); <br>
                 Source: Chu et al., The Lancet, 395(10242), 2020]</em>)</span>
-                <!--Estimated using: Relative risk from face mask use in
-                non-healthcare settings: 0.56 (0.40 - 0.79); <br>
-                Relative risk for every 1m distancing: 0.49 (0.26 – 0.93); <br>
-                Source: Chu et al., The Lancet, 395(10242), 2020] </p>-->
-            <p class='w3-col s3'> Contact Rate: </p>
-            <p class='w3-col s9'> Average number of contacts per person per day </p>
-            <p class='w3-col s3'> Mass Test (%): </p>
-            <p class='w3-col s9'> Percent of the population to test per day </p>
-            <p class='w3-col s3'> Trace & Test (%): </p>
-            <p class='w3-col s9'> Percent of contacts traced and tested</p>
+            <p class='w3-col s3'> Contact rate (per day): </p>
+            <p class='w3-col s9'> Average number of contacts per person per day. </p>
+            <p class='w3-col s3'> Mass test (% per day): </p>
+            <p class='w3-col s9'> Percent of the population to test per day. </p>
+            <p class='w3-col s3'> Trace and test rate (% per day):  </p>
+            <p class='w3-col s9'> Percent of the contacts to trace and test per day,
+                equivalent to inverse of the time from infection to diagnosis and isolation.</p>
           </div>
           <div class='w3-row'>
             <p class='w3-col s12'> Follow the links below for more information</p>
           </div>
         </div>
       </div>
-      <div class='w3-panel w3-border w3-col s6 w3-round' style='height:75vh; overflow-y:scroll'>
-        <h3 class='w3-border-bottom' style='text-align:center'>Scenarios</h3>
-        <div class='w3-border-bottom w3-border-top'>
-          <h3 style='text-align:center'>Plan A</h3>
-          <div class=w3-row>
-            <div class='w3-row'>
-              <div id=TRaLabel class='w3-col s5'>Transmission Risk (%): </div>
-              <div class="w3-col s5">
-                1 <input id=TRa type="range" min="1" max="17" value="3" class="slider" onchange='updateSliderOverview()'>17
-              </div>
-              <div id=TRaVal></div>
-            </div>
+      <div class='w3-panel w3-border w3-col s6 w3-round' style='height:75vh; overflow-y:scroll; ; font-size:.66vw'>
+        <div id=holdPlanA>
+          <h3 class='w3-border-bottom' style='text-align:center'>Scenarios</h3>
+          <div class='w3-border-bottom w3-border-top'>
+            <h3 style='text-align:center'>Plan A</h3>
             <div class=w3-row>
-              <div id=CRaLabel class='w3-col s5'>Contact Rate: </div>
-              <div class="w3-col s5">
-                1 <input id=CRa type="range" min="1" max="25" value="7" class="slider" onchange='updateSliderOverview()'>25
+              <div class='w3-row'>
+                <div id=TRaLabel class='w3-col s5'>Transmission risk (% per day): </div>
+                <div class="w3-col s5">
+                  1 <input id=TRa type="range" min="1" max="17" value="3" class="slider" onchange='updateSliderOverview()'>17
+                </div>
+                <div id=TRaVal></div>
               </div>
-              <div id=CRaVal></div>
-            </div>
-            <div class=w3-row>
-              <div id=MTaLabel class='w3-col s5'>Mass Test (%): </div>
-              <div class="w3-col s5">
-                0 <input id=MTa type="range" min="0" max="100" value="5" class="slider" onchange='updateSliderOverview()'>100
+              <div class=w3-row>
+                <div id=CRaLabel class='w3-col s5'>Contact rate (per day): </div>
+                <div class="w3-col s5">
+                  1 <input id=CRa type="range" min="1" max="25" value="7" class="slider" onchange='updateSliderOverview()'>25
+                </div>
+                <div id=CRaVal></div>
               </div>
-              <div id=MTaVal></div>
-            </div>
-            <div class=w3-row>
-              <div id=TTaLabel class='w3-col s5'>Trace & Test (%): </div>
-              <div class="w3-col s5">
-                0 <input id=TTa type="range" min="0" max="100" value="66" class="slider" onchange='updateSliderOverview()'>100
+              <div class=w3-row>
+                <div id=MTaLabel class='w3-col s5'>Mass test (% per day): </div>
+                <div class="w3-col s5">
+                  0 <input id=MTa type="range" min="0" max="100" value="5" class="slider" onchange='updateSliderOverview()'>100
+                </div>
+                <div id=MTaVal></div>
               </div>
-              <div id=TTaVal></div>
+              <div class=w3-row>
+                <div id=TTaLabel class='w3-col s5'>Trace and test rate (% per day): </div>
+                <div class="w3-col s5">
+                  0 <input id=TTa type="range" min="0" max="100" value="66" class="slider" onchange='updateSliderOverview()'>100
+                </div>
+                <div id=TTaVal></div>
+              </div>
             </div>
           </div>
         </div>
-        <div class='w3-border-bottom w3-container'>
+        <div id=holdPlanB class='w3-border-bottom'>
           <h3 style='text-align:center'>Plan B</h3>
           <div class='w3-row'>
-            <div id=TRbLabel class='w3-col s5'>Transmission Risk (%): </div>
+            <div id=TRbLabel class='w3-col s5'>Transmission risk (% per day) </div>
             <div class="w3-col s5">
               1 <input id=TRb type="range" min="1" max="17" value="8" class="slider" onchange='updateSliderOverview()'>17
             </div>
@@ -196,21 +203,21 @@
           </div>
           <div id=holdPlanB class='w3-border-bottom'>
             <div class=w3-row>
-              <div id=CRbLabel class='w3-col s5'>Contact Rate: </div>
+              <div id=CRbLabel class='w3-col s5'>Contact rate (per day): </div>
               <div class="w3-col s5">
                 1 <input id=CRb type="range" min="1" max="25" value="10" class="slider" onchange='updateSliderOverview()'>25
               </div>
               <div id=CRbVal></div>
             </div>
             <div class='w3-row'>
-              <div id=MTbLabel class='w3-col s5'>Mass Test (%): </div>
+              <div id=MTbLabel class='w3-col s5'>Mass test (% per day): </div>
               <div class="w3-col s5">
                 0 <input id=MTb type="range" min="0" max="100" value="10" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=MTbVal></div>
             </div>
             <div class='w3-row'>
-              <div id=TTbLabel class='w3-col s5'>Trace & Test (%): </div>
+              <div id=TTbLabel class='w3-col s5'>Trace and test rate (% per day): </div>
               <div class="w3-col s5">
                 0 <input id=TTb type="range" min="0" max="100" value="75" class="slider" onchange='updateSliderOverview()'>100
               </div>
@@ -219,32 +226,32 @@
 
           </div>
         </div>
-        <div class='w3-border-bottom w3-container'>
+        <div id=holdPlanC class='w3-border-bottom'>
           <h3 style='text-align:center'>Plan C</h3>
           <div id=holdPlanC class='w3-border-bottom'>
             <div class='w3-row'>
-              <div id=TRcLabel class='w3-col s5'>Transmission Risk (%): </div>
+              <div id=TRcLabel class='w3-col s5'>Transmission risk (% per day) </div>
               <div class="w3-col s5">
                 1 <input id=TRc type="range" min="1" max="17" value="14" class="slider" onchange='updateSliderOverview()'>17
               </div>
               <div id=TRcVal></div>
             </div>
             <div class='w3-row'>
-              <div id=CRcLabel class='w3-col s5'>Contact Rate: </div>
+              <div id=CRcLabel class='w3-col s5'>Contact rate (per day): </div>
               <div class="w3-col s5">
                 1 <input id=CRc type="range" min="1" max="25" value="15" class="slider" onchange='updateSliderOverview()'>25
               </div>
               <div id=CRcVal></div>
             </div>
             <div class='w3-row'>
-              <div id=MTcLabel class='w3-col s5'>Mass Test (%): </div>
+              <div id=MTcLabel class='w3-col s5'>Mass test (% per day): </div>
               <div class="w3-col s5">
                 0 <input id=MTc type="range" min="0" max="100" value="15" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=MTcVal></div>
             </div>
             <div class='w3-row'>
-              <div id=TTcLabel class='w3-col s5'>Trace & Test (%): </div>
+              <div id=TTcLabel class='w3-col s5'>Trace and test rate (% per day): </div>
               <div class="w3-col s5">
                 0 <input id=TTc type="range" min="0" max="100" value="25" class="slider" onchange='updateSliderOverview()'>100
               </div>
