@@ -23,7 +23,6 @@ def create_app():
     assets = Environment(app)
     assets.register(bundles)
 
-    from . import models
     from . import routes
 
     app.register_blueprint(routes.bp)
