@@ -8,21 +8,21 @@
       <h3 class='w3-border-bottom' style='text-align:center'>Initial Population Data</h3>
       <h4 class='w3-border-top' style='text-align:center'> Timeline</h4>
       <div class='w3-row'>
-        <div class='w3-col s6'>Start Simulation:</div>
+        <div class='w3-col s6'>Start simulation:</div>
         <input id=simStart  class='w3-round w3-col s6' type=date value=2020-08-24 ></input>
       </div>
       <div class='w3-row'>
-        <div class='w3-col s6'>End Simulation:</div>
+        <div class='w3-col s6'>End simulation:</div>
         <input id=simEnd  class='w3-round w3-col s6' type=date value=2020-11-20></input>
       </div>
       <h3 class='w3-border-top' style='text-align:center'> Starting Conditions</h3>
       <div>
         <div class='w3-row'>
-          <div class='w3-col s8'>Enter Population Size:</div>
+          <div class='w3-col s8'>Enter population size:</div>
           <input id=popSize class='w3-round w3-col s4' type=number min=0 value=38000></input>
         </div>
         <div class='w3-row'>
-           <div class='w3-col s8'>Initial Infections:</div>
+           <div class='w3-col s8'>Initial infections:</div>
            <input id=initialInfections class='w3-round w3-col s4' min=0 type=number value=5></input>
         </div>
         <div class='w3-row'>
@@ -30,9 +30,9 @@
           <input id=outsideInfections class='w3-round w3-col s4' type=number min=0 value=10></input>
         </div>
         <div class='w3-row'>
-          <div class='w3-col s8 w3-tooltip'>Trace and test initiation (# of cases)
+          <div class='w3-col s8 w3-tooltip'>Trace and test initiation
             <i class="fa fa-info-circle" aria-hidden="true"></i>:
-            <span class="w3-text">(<em>Condition for trace and test initiation (# diagnosed cases)</em>)</span>
+            <span class="w3-text">(<em>Condition for trace and test initiation (number diagnosed cases)</em>)</span>
           </div>
           <input id=initTrace class='w3-round w3-col s4' type=number min=0 value=20></input>
         </div>
@@ -40,18 +40,18 @@
       <h4 class='w3-border-top' style='text-align:center'> Unit Costs (Per Person)</h4>
       <div>
         <div class='w3-row'>
-          <div class='w3-col s9'>Symptom-Based Test:</div>
+          <div class='w3-col s9'>Symptom-based test:</div>
           <input id=costSB class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
         <div class='w3-row'>
-          <div class='w3-col s9 w3-tooltip'>Contact Trace and Test
+          <div class='w3-col s9 w3-tooltip'>Contact trace and test
              <i class="fa fa-info-circle" aria-hidden="true"></i>:
-             <span class="w3-text">(<em>Per Contact</em>)</span>
+             <span class="w3-text">(<em>per contact</em>)</span>
            </div>
           <input id=costCT class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
         <div class='w3-row'>
-          <div class='w3-col s9'>Mass Test:</div>
+          <div class='w3-col s9'>Mass test:</div>
           <input id=costUT class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
         <div class='w3-row'>
@@ -142,8 +142,8 @@
           <div class='w3-row w3-border'>
             <h3 style='text-align:center'> Descriptions (Scenarios) </h3>
           <div class='w3-row'>
-            <p class='w3-col s3'> Transmission risk (% per day): </p>
-            <p class='w3-col s9 w3-tooltip'> The chance of transmission per contact per day.
+            <p class='w3-col s4'> Transmission risk <br> (% per day): </p>
+            <p class='w3-col s8 w3-tooltip'> The chance of transmission per contact per day.
                Suggested estimates to use:  <br>
                Baseline: 14% (11.6% - 17%); <br>
                With facemask-use: 7.8% (5.6% -11.1%); <br>
@@ -155,16 +155,16 @@
                 Source: Chu et al., The Lancet, 395(10242), 2020]</em>)</span>
             </div>
             <div class='w3-row'>
-              <p class='w3-col s3'> Contact rate (per day): </p>
-              <p class='w3-col s9'> Average number of contacts per person per day. </p>
+              <p class='w3-col s4'> Contact rate (per day): </p>
+              <p class='w3-col s8'> Average number of contacts per person per day. </p>
             </div>
             <div class='w3-row'>
-              <p class='w3-col s3'> Mass test (% per day): </p>
-              <p class='w3-col s9'> Percent of the population to test per day. </p>
+              <p class='w3-col s4'> Mass test (% per day): </p>
+              <p class='w3-col s8'> Percent of the population to test per day. </p>
             </div>
             <div class='w3-row'>
-              <p class='w3-col s3'> Trace and test rate (% per day):  </p>
-              <p class='w3-col s9'> Percent of the contacts to trace and test per day,
+              <p class='w3-col s4'> Trace and test rate <br>(% per day):  </p>
+              <p class='w3-col s8'> Percent of the contacts to trace and test per day,
                   equivalent to inverse of the time from infection to diagnosis and isolation.</p>
             </div>
           </div>
@@ -270,7 +270,7 @@
             <div class='w3-row'>
               <div id=TTcLabel class='w3-col s5'>Trace and test rate (% per day): </div>
               <div class="w3-col s5">
-                0 <input id=TTc type="range" min="0" max="100" value="25" class="slider" onchange='updateSliderOverview()'>100
+                0 <input id=TTc type="range" min="0" max="100" value="33" class="slider" onchange='updateSliderOverview()'>100
               </div>
               <div id=TTcVal></div>
             </div>
