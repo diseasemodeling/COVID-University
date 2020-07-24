@@ -77,8 +77,9 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
         model.step(action_t = d_m) # run step
         i += 1  # move time
         timer = time.time() - time_start # update timer
-    if model.t == model.T_total:
-        output = model.op_ob.write_scenario_needed_results()
+    print('end t', model.t)
+    print('end d', model.d)
+    output = model.op_ob.write_scenario_needed_results(model.d)
     # get results for graphics on website
     remaining_decision = decision[i//model.inv_dt :] # cut the simulation policy for what still needs to be simulated
     is_complete = 'True' if len(remaining_decision) == 0 else 'False'  # ^ check if simulation is done

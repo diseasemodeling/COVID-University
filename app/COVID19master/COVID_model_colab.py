@@ -30,7 +30,6 @@ class CovidModel():
         self.percent_dead_recover_days = gv.percent_dead_recover_days_v  
         self.init_pop_dist = gv.pop_dist_v                                 # initial population distribution 
         self.tot_pop = gv.total_pop                                        # total number of population by State/ University
-        print('pop',self.tot_pop)
         self.input_list_const = gv.input_list_const_v                      # input parameters for reading the below parameters
         self.l_days =  self.input_list_const.loc['Days_L', 'value']        # latent period duration (non-infectious)
         self.prop_asymp = self.input_list_const.loc['Prop_Asymp', 'value'] # proportion of cases that never show symptoms
