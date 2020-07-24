@@ -274,8 +274,9 @@ class CovidModel():
                         self.rate_array[14] = (1 - (self.dead_scale * self.percent_dead_recover_days[i2,risk + 2]/100))/(self.percent_dead_recover_days[i2, 5])
                         # rate of H to R
                         self.rate_array[15] = (self.dead_scale * self.percent_dead_recover_days[i2,risk + 2]/100)/(self.percent_dead_recover_days[i2, 4])
-
-
+                    if self.t % 250 == 0:
+                        print('r14', self.rate_array[14])
+                        print('r15', self.rate_array[15])
                 # Initialize a new Q-matrix that will change during the simulation
                 Q_new = np.zeros((self.num_state, self.num_state))    
 
