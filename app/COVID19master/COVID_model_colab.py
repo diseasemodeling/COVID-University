@@ -169,9 +169,6 @@ class CovidModel():
         else:
             self.a_c = 0      
         self.a_u = action_t[2] * self.test_sensitivity
-        print('self.a_sd', self.a_sd)
-        print('self.a_c',self.a_c)
-        print('self.a_u', self.a_u)
         self.T_u = self.a_u * np.sum(self.pop_dist_sim[(self.t - 1),:,:,0:4]) # number of mass tests needed
         self.T_c = self.a_c * ((1 - self.a_u) * np.sum(self.pop_dist_sim[(self.t - 1),:,:,1:4])) \
                    / self.second_attack_rate / self.test_sensitivity          # number of contact trace and tests needed
