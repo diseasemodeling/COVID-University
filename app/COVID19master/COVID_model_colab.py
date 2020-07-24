@@ -42,7 +42,6 @@ class CovidModel():
         
         self.second_attack_rate = gv.SAR                                   # second attack rate 
         self.tran_prob = gv.trans_prob                                     # transmission probability
-        print('trans',self.tran_prob)
         self.hosp_scale = gv.hosp_scale                                    # hospitalization scaling factor
         self.dead_scale = gv.dead_scale                                    # death scaling factor 
 
@@ -81,6 +80,7 @@ class CovidModel():
     # a_u - percentage of mass tests
     def step(self, action_t):
         print('t',self.t)
+        print('action', action_t)
         self.policy[self.t] = action_t   # record policy/decison choices
         self.set_action_mod(action_t)    # set-up decision choices to individual varaibls 
         self.simulation_base()           # main simulation
