@@ -19,44 +19,44 @@
       <div>
         <div class='w3-row'>
           <div class='w3-col s8'>Enter Population Size:</div>
-          <input id=popSize class='w3-round w3-col s4' type=number value=38000></input>
+          <input id=popSize class='w3-round w3-col s4' type=number min=0 value=38000></input>
         </div>
         <div class='w3-row'>
            <div class='w3-col s8'>Initial Infections:</div>
-           <input id=initialInfections class='w3-round w3-col s4' type=number value=5></input>
+           <input id=initialInfections class='w3-round w3-col s4' min=0 type=number value=5></input>
         </div>
         <div class='w3-row'>
           <div class='w3-col s8'>Infections from outside contacts (per day):</div>
-          <input id=outsideInfections class='w3-round w3-col s4' type=number value=10></input>
+          <input id=outsideInfections class='w3-round w3-col s4' type=number min=0 value=10></input>
         </div>
         <div class='w3-row'>
           <div class='w3-col s8 w3-tooltip'>Trace and test initiation (# of cases)
             <i class="fa fa-info-circle" aria-hidden="true"></i>:
             <span class="w3-text">(<em>Condition for trace and test initiation (# diagnosed cases)</em>)</span>
           </div>
-          <input id=initTrace class='w3-round w3-col s4' type=number value=20></input>
+          <input id=initTrace class='w3-round w3-col s4' type=number min=0 value=20></input>
         </div>
       </div>
       <h4 class='w3-border-top' style='text-align:center'> Unit Costs (Per Person)</h4>
       <div>
         <div class='w3-row'>
           <div class='w3-col s9'>Symptom-Based Test:</div>
-          <input id=costSB class='w3-round w3-col s3' type=number value=50></input>
+          <input id=costSB class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
         <div class='w3-row'>
           <div class='w3-col s9 w3-tooltip'>Contact Trace and Test
              <i class="fa fa-info-circle" aria-hidden="true"></i>:
              <span class="w3-text">(<em>Per Contact</em>)</span>
            </div>
-          <input id=costCT class='w3-round w3-col s3' type=number value=50></input>
+          <input id=costCT class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
         <div class='w3-row'>
           <div class='w3-col s9'>Mass Test:</div>
-          <input id=costUT class='w3-round w3-col s3' type=number value=50></input>
+          <input id=costUT class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
         <div class='w3-row'>
           <div class='w3-col s9'>Quarantine:</div>
-          <input id=costQ class='w3-round w3-col s3' type=number value=50></input>
+          <input id=costQ class='w3-round w3-col s3' type=number min=0 value=50></input>
         </div>
       </div>
       <div class='w3-border w3-round w3-margin-top'>
@@ -87,13 +87,13 @@
             <td id=mtC class='w3-border'></td>
           </tr>
           <tr>
-            <td class='w3-border'>Trace and test rate (%)*</td>
+            <td class='w3-border'>Trace and test rate (%)</td>
             <td id=ttA class='w3-border'></td>
             <td id=ttB class='w3-border'></td>
             <td id=ttC class='w3-border'></td>
           </tr>
         </table>
-        <div class='w3-container'> * - All rates are per day</div>
+        <div class='w3-container'> * - Rates are per day</div>
       </div>
     </div>
     <div class='w3-border w3-panel w3-round w3-blue-grey' style="height:7.5vh">
@@ -195,7 +195,7 @@
         <div id=holdPlanB class='w3-border-bottom'>
           <h3 style='text-align:center'>Plan B</h3>
           <div class='w3-row'>
-            <div id=TRbLabel class='w3-col s5'>Transmission risk (% per day) </div>
+            <div id=TRbLabel class='w3-col s5'>Transmission risk (% per day): </div>
             <div class="w3-col s5">
               1 <input id=TRb type="range" min="1" max="17" value="8" class="slider" onchange='updateSliderOverview()'>17
             </div>
@@ -223,14 +223,13 @@
               </div>
               <div id=TTbVal></div>
             </div>
-
           </div>
         </div>
         <div id=holdPlanC class='w3-border-bottom'>
           <h3 style='text-align:center'>Plan C</h3>
           <div id=holdPlanC class='w3-border-bottom'>
             <div class='w3-row'>
-              <div id=TRcLabel class='w3-col s5'>Transmission risk (% per day) </div>
+              <div id=TRcLabel class='w3-col s5'>Transmission risk (% per day): </div>
               <div class="w3-col s5">
                 1 <input id=TRc type="range" min="1" max="17" value="14" class="slider" onchange='updateSliderOverview()'>17
               </div>
