@@ -78,8 +78,6 @@ class CovidModel():
     # a_c - percentage of contact trace and tests
     # a_u - percentage of mass tests
     def step(self, action_t):
-        print('t',self.t)
-        print('action', action_t)
         self.policy[self.t] = action_t   # record policy/decison choices
         self.set_action_mod(action_t)    # set-up decision choices to individual varaibls 
         self.simulation_base()           # main simulation
