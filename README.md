@@ -1,6 +1,4 @@
-# base-app
-This is the starting point for all apps
-
+# COVID University Simulator
    
 ### Open access
 The tool is open access and can be used for your own analyses, citing instructions [![DOI](https://zenodo.org/badge/266425269.svg)](https://zenodo.org/badge/latestdoi/266425269) \
