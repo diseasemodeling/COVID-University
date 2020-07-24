@@ -414,7 +414,6 @@ function start_sim(to_python=null){
   if (to_python == null){
     reset_progress_bar()
     to_python = data_for_sim()
-    console.log(to_python)
     d3.select("#infsim").remove()
     d3.select("#undiag").remove()
     d3.select("#hospsim").remove()
@@ -431,9 +430,7 @@ function start_sim(to_python=null){
         contentType: "application/json",
         success: function (dataset) {
           all_data = dataset.data;
-          console.log(all_data)
           simA = to_object(all_data['A']['to_java'], 'A')
-          console.log(simA)
           if (all_data['B']==undefined){simB=null}else{simB=to_object(all_data['B']['to_java'], 'B')}
           if (all_data['C']==undefined){simC=null}else{simC=to_object(all_data['C']['to_java'], 'C')}
           makeSimLine(parentName='graphCumCases', SVG_name='infsim',
@@ -535,18 +532,6 @@ function switchTab(clickTab, showTab) {
   }
   document.getElementById(showTab).style.display = "block";
   document.getElementById(clickTab).className += ' w3-red'
-}
-
-function format_datetime(date){
-  month = '' + (date.getMonth() + 1),
-  day = '' + date.getDate(),
-  year = date.getFullYear();
-  if (month.length < 2)
-    month = '0' + month;
-  if (day.length < 2)
-    day = '0' + day;
-  date = [year, month, day].join('-');
-  return date
 }
 
 </script>
