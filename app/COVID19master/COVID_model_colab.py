@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 from datetime import timedelta
-import datetime as dt
-import random, time, os, json, copy
 from math import ceil, floor
 
 
@@ -164,6 +162,7 @@ class CovidModel():
     # a_c - percentage of contact trace and tests
     # a_u - percentage of mass tests
     def set_action_mod(self, action_t):
+        
         self.a_sd = action_t[0] 
         if(self.tot_num_diag[self.t-1] >= self.num_to_init_trace): #1):#20): 
             self.a_c = action_t[1]
