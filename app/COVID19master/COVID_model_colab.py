@@ -162,12 +162,16 @@ class CovidModel():
     # a_c - percentage of contact trace and tests
     # a_u - percentage of mass tests
     def set_action_mod(self, action_t):
+        
         self.a_sd = action_t[0] 
         if(self.tot_num_diag[self.t-1] >= self.num_to_init_trace): #1):#20): 
             self.a_c = action_t[1]
         else:
             self.a_c = 0      
         self.a_u = action_t[2] * self.test_sensitivity
+        print('self.a_sd', self.a_sd)
+        print('self.a_c',self.a_c)
+        print('self.a_u', self.a_u)
         self.T_u = self.a_u * np.sum(self.pop_dist_sim[(self.t - 1),:,:,0:4]) # number of mass tests needed
         self.T_c = self.a_c * ((1 - self.a_u) * np.sum(self.pop_dist_sim[(self.t - 1),:,:,1:4])) \
                    / self.second_attack_rate / self.test_sensitivity          # number of contact trace and tests needed
