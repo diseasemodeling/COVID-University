@@ -423,7 +423,7 @@ function start_sim(to_python=null){
                       dataType='Cumulative cases (diagnosed and undiagnosed)',
                       simA=simA, simB=simB, simC=simC)
           makeSimLine(parentName='graphNewCases', SVG_name='undiag',
-                      dataType='Number of diagnosis per day',
+                      dataType='Newly diagnosed',
                       simA=simA, simB=simB, simC=simC)
           makeSimLine(parentName='graphHospital', SVG_name='hospsim',
                       dataType='Cumulative hospitalized',
@@ -441,7 +441,7 @@ function start_sim(to_python=null){
                       dataType='Number of mass tests',
                       simA=simA, simB=simB, simC=simC)
           makeSimLine(parentName='graphQuarentine', SVG_name='quarsim',
-                      dataType='Number of quarantined (only true positives)',
+                      dataType='Number of quarantines (only true positives)',
                       simA=simA, simB=simB, simC=simC)
           if (all_data['status'] == 'Not Finished'){
             update_progress_bar(all_data)
