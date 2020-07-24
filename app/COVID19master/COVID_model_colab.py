@@ -30,7 +30,7 @@ class CovidModel():
         self.percent_dead_recover_days = gv.percent_dead_recover_days_v  
         self.init_pop_dist = gv.pop_dist_v                                 # initial population distribution 
         self.tot_pop = gv.total_pop                                        # total number of population by State/ University
-
+        print('pop',self.tot_pop)
         self.input_list_const = gv.input_list_const_v                      # input parameters for reading the below parameters
         self.l_days =  self.input_list_const.loc['Days_L', 'value']        # latent period duration (non-infectious)
         self.prop_asymp = self.input_list_const.loc['Prop_Asymp', 'value'] # proportion of cases that never show symptoms
@@ -42,7 +42,7 @@ class CovidModel():
         
         self.second_attack_rate = gv.SAR                                   # second attack rate 
         self.tran_prob = gv.trans_prob                                     # transmission probability
-
+        print('trans',self.tran_prob)
         self.hosp_scale = gv.hosp_scale                                    # hospitalization scaling factor
         self.dead_scale = gv.dead_scale                                    # death scaling factor 
 
@@ -80,6 +80,7 @@ class CovidModel():
     # a_c - percentage of contact trace and tests
     # a_u - percentage of mass tests
     def step(self, action_t):
+        print('t',self.t)
         self.policy[self.t] = action_t   # record policy/decison choices
         self.set_action_mod(action_t)    # set-up decision choices to individual varaibls 
         self.simulation_base()           # main simulation
