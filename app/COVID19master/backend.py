@@ -90,8 +90,8 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
     
     while timer < 3:
         timer = time.time() - time_start
-    with open(filename, 'wb') as output:  # Overwrites any existing file.
-        pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)
+    with open(filename, 'wb') as output_file:  # Overwrites any existing file.
+        pickle.dump(model, output_file, pickle.HIGHEST_PROTOCOL)
     
     return data    
     
