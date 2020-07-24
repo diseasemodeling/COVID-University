@@ -74,6 +74,7 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
         if model.t % 25 == 0: print('t', model.t, np.round(timer, 2)) # print progress
         if i % model.inv_dt == 0 and i//model.inv_dt < len(decision): # if next day, set policy for the new day
             d_m = decision[i//model.inv_dt]
+        print('decision',d_m)
         model.step(action_t = d_m) # run step
         i += 1  # move time
         timer = time.time() - time_start # update timer
