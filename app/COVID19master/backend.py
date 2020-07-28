@@ -87,6 +87,7 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
     data['load_pickle'] = 'True'
     data['is_complete'] = is_complete
     data['to_java'] = output
+    print(output.head())
     data = prep_results_for_java(data)
     
     while timer < 3:
@@ -107,9 +108,7 @@ def prep_results_for_java(results, prior_results=None):
         results['to_java'] = json.dumps(results['to_java'])
     else:
         temp = results['to_java']
-        temp = temp.loc[temp['Cumulative diagnosis']!=0]
-        #if type(prior_results) != type(None):
-        #    temp = prior_results.append(temp, ignore_index=True)
+        temp = temp.loc[temp.sum(axis=1)!= 0]
         results['to_java'] = json.dumps(temp.astype(str).to_dict('index'))
     results['remaining_decision'] = json.dumps(results['remaining_decision'].tolist())
     results['costs'] = json.dumps(results['costs'])
