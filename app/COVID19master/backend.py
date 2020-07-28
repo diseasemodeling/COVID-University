@@ -87,9 +87,8 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
     data['load_pickle'] = 'True'
     data['is_complete'] = is_complete
     data['to_java'] = output
-    print(output.head())
     data = prep_results_for_java(data)
-    
+
     while timer < 3:
         timer = time.time() - time_start
     with open(filename, 'wb') as output_file:  # Overwrites any existing file.
@@ -100,7 +99,7 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
 
 
 
-def prep_results_for_java(results, prior_results=None):
+def prep_results_for_java(results):
     results = copy.deepcopy(results)
     results['is_complete'] = str(results['is_complete'])
     results['load_pickle'] = str(results['load_pickle'])
