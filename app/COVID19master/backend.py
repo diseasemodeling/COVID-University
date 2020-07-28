@@ -89,8 +89,9 @@ def main_run(decision, T_max, data=None, state='UMASS', pop_size = 38037,
     data['to_java'] = output
     data = prep_results_for_java(data)
 
-    while timer < 3:
+    while timer < 5:
         timer = time.time() - time_start
+        print('time check')
     with open(filename, 'wb') as output_file:  # Overwrites any existing file.
         pickle.dump(model, output_file, pickle.HIGHEST_PROTOCOL)
     
@@ -142,10 +143,20 @@ def prep_input_for_python(results):
     return results
 
 def prep_input_excel(results):
-    dont_include = ['to_java', 'remaining_decision', 'is_complete', 'pre_data']
+    dont_include = ['to_java', 'is_complete', 'pre_data', 'load_pickle']
     cost_name = {0: 'Cost of Sympton-Based Test (Per Person)', 1:'Cost of Trace and Test (Per Person)',
                  2: 'Cost of Mass Test (Per Person)', 3:'Cost of Quarentine (Per Day)',
                  4:'Cost of Quarentine (Per Day)'}
+    policy_name = {0: 'Contact Rate (Per Day)', 1:'Trace and test rate (% per day)',
+                   2: 'Mass test (% per day)'}
+    other_name = {'endSim': 'End Simulation - Date',
+                  'startSim': 'Start Simulation - Date',
+                  'state': 'State Simulated',
+                  'trans_prob': 'Transmission Risk (per contant)',
+                  'travel_num_inf':'Infections from outside contacts (per day)',
+                  'num_to_init_trace':'Trace and test initiation (Number of Cases)',
+                  'pop_size': 'Population Size',
+                  'init_num_inf': 'Number of Initial Infections'}
     to_excel = {}
     for key, plan in results.items():
         if key in ['A', 'B', 'C']:
@@ -156,7 +167,14 @@ def prep_input_excel(results):
                         value = json.loads(value)
                         for i, cost in enumerate(value):
                             to_excel[key][cost_name[i]] = cost
+                    elif point == 'remaining_decision':
+                        value = json.loads(value)[0]
+                        for i, policy in enumerate(value):
+                            to_excel[key][policy_name[i]] = policy
                     else:
-                        to_excel[key][point] = value
+                        if point in other_name.keys():
+                            to_excel[key][other_name[point]] = value
+                        else:
+                            to_excel[key][point] = value                  
     to_excel = pd.DataFrame.from_dict(to_excel)
     return to_excel
