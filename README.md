@@ -8,14 +8,10 @@ The tool is open access and can be used for your own analyses, citing instructio
 pre-print https://www.medrxiv.org/content/10.1101/2020.07.21.20158303v1.full.pdf
 
 # Authors 
-Developed by the Disease Modeling Lab, Industrial Engineering, University of Massachusetts Amherst
-
-Simulation model development: Xinmeng Zhao, Hanisha Tatapudi
-
-Software development: Ron Mallach, Dennis Hofmann
-
-Modeling assistance: Sonza Singh, Shifali Shifali, Seyedeh Nazanin Khatami, Arman Mohseni Kabir 
-
+Developed by the Disease Modeling Lab, Industrial Engineering, University of Massachusetts Amherst \
+Simulation model development: Xinmeng Zhao, Hanisha Tatapudi \
+Software development: Ron Mallach, Dennis Hofmann \
+Modeling assistance: Sonza Singh, Shifali Shifali, Seyedeh Nazanin Khatami, Arman Mohseni Kabir \
 PI: Dr. Chaitra Gopalappa
 
 # Questions 
