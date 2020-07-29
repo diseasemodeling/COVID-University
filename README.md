@@ -5,7 +5,10 @@
 The tool is open access and can be used for your own analyses, citing instructions [![DOI](https://zenodo.org/badge/266425269.svg)](https://zenodo.org/badge/latestdoi/266425269) \
 
 # Methods 
-pre-print https://www.medrxiv.org/content/10.1101/2020.07.21.20158303v1.full.pdf
+[MedRxiv pre-print](https://www.medrxiv.org/content/10.1101/2020.07.21.20158303v1.full.pdf)
+
+# Model 
+[GitHub) (https://github.com/diseasemodeling/COVID-University)
 
 # Authors 
 Developed by the Disease Modeling Lab, Industrial Engineering, University of Massachusetts Amherst \
