@@ -2,8 +2,9 @@
    
 ### Open access
 # Simulator 
-The online simulation tool can be used for analyses of COVID-19 control at a university, by evaluating alternative combinations of contact rate, mass test rate, trace and test rate, and tramsmisison rate. \
-The tool is open access and can be used for your own analyses, citing instructions [![DOI](https://zenodo.org/badge/266425269.svg)](https://zenodo.org/badge/latestdoi/266425269) \
+The online simulation webApp can be used for analyses of COVID-19 control at a university, by evaluating alternative combinations of contact rate, mass test rate, trace and test rate, and tramsmisison rate. \
+[Simulator- WebApp](https://covid-university.herokuapp.com/) \
+The webApp is an open access simulation tool and can be used for your own analyses, citing instructions [![DOI](https://zenodo.org/badge/266425269.svg)](https://zenodo.org/badge/latestdoi/266425269) 
 
 # Methods 
 [MedRxiv pre-print](https://www.medrxiv.org/content/10.1101/2020.07.21.20158303v1.full.pdf)
