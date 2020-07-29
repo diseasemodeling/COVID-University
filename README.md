@@ -1,7 +1,8 @@
-# COVID University Simulator
+# COVID-19 University Simulator
    
 ### Open access
 # Simulator 
+The online simulation tool can be used for analyses of COVID-19 control at a university, by evaluating alternative combinations of contact rate, mass test rate, trace and test rate, and tramsmisison rate. \
 The tool is open access and can be used for your own analyses, citing instructions [![DOI](https://zenodo.org/badge/266425269.svg)](https://zenodo.org/badge/latestdoi/266425269) \
 
 # Methods 
