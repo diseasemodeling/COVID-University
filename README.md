@@ -8,7 +8,7 @@ The tool is open access and can be used for your own analyses, citing instructio
 [MedRxiv pre-print](https://www.medrxiv.org/content/10.1101/2020.07.21.20158303v1.full.pdf)
 
 # Model 
-[GitHub] (https://github.com/diseasemodeling/COVID-University)
+[GitHub](https://github.com/diseasemodeling/COVID-University)
 
 # Authors 
 Developed by the Disease Modeling Lab, Industrial Engineering, University of Massachusetts Amherst \
