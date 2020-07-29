@@ -112,9 +112,7 @@ function makeSimLine(parentName, SVG_name, dataType=null, simA=null, simB=null, 
          .attr("d", d => drawSimLine(d))
      }
 
-    if (dataType == 'Number of quarantines (only true positives)'){
-      title = 'Number to quarantine (only true positives)'
-    } else if (dataType == 'Cumulative costs'){
+    if (dataType == 'Cumulative costs'){
       title = 'Cumulative cost ($)(in millions)'
     } else if (dataType == 'Number of diagnosis per day'){
       title = 'Newly Diagnosed'
