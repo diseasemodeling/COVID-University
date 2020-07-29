@@ -14,10 +14,11 @@ The webApp is an open access simulation tool and can be used for your own analys
 
 # Authors 
 Developed by the Disease Modeling Lab, Industrial Engineering, University of Massachusetts Amherst \
-Simulation model development: Xinmeng Zhao, Hanisha Tatapudi \
-Software development: Ron Mallach, Dennis Hofmann \
-Model development reinforcements: Sonza Singh, Shifali Shifali, Seyedeh Nazanin Khatami, Arman Mohseni Kabir \
-PI: Dr. Chaitra Gopalappa
+**Simulation model development**: Xinmeng Zhao, Hanisha Tatapudi \
+**Software development**: Ron Mallach, Dennis Hofmann \
+**Model development reinforcements**: Sonza Singh, Shifali Shifali, Seyedeh Nazanin Khatami, Arman Mohseni Kabir \
+**Acknowledgements**: Dr. George Corey, Dr. Michael Ash, Dr. Laura Balzer, Dr. Hari Balasubramanian, Dr. Andrew Lover \
+**PI**: Dr. Chaitra Gopalappa
 
 # Questions 
 For questions, comments, or interests in collaborations please contact the PI \
