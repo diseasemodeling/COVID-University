@@ -283,6 +283,11 @@
       <div id=simRunning style='display:none'>
         <div>
           <h3> The simulator is currently running... DO NOT LEAVE THIS PAGE </h3>
+          <ul>
+            <li> Results will be updated below every ~15 seconds</li>
+            <li> Other simulation metrics will be available in an Excel file that can be downloaded</li>
+            <li> Once the simulation is complete, these messages will dissapear</li>
+          </ul>
           <div class='w3-row'>
             <div class='w3-col s9'>
               <h2 style='text-align:center'> Progress </h2>
@@ -300,12 +305,10 @@
               <p style='vertical-align:center; text-align:center'><i class="fa fa-spinner w3-spin" style="font-size:150px"></i></p>
             </div>
           </div>
-          <h3> Results + Progress will be updated below every 20 seconds</h3>
-          <h3> Once the simulation is completed, these messages will dissapear</h3>
         </div>
       </div>
       <div id=simCompleted style='display:none'>
-        <h3> Simulation Completed,  <a href="{{ url_for('blueprint.download_newfile') }}">Download Excel File With Results</a></h3>
+        <h3><a href="{{ url_for('blueprint.download_newfile') }}">Download Excel File With All Simulation Results</a></h3>
       </div>
       <div class='w3-col s6' style='height:60vh'>
         <div class='w3-border w3-light-grey' id=graphHospital></div>
