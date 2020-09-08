@@ -386,7 +386,7 @@ class CovidModel():
                         else:
                             self.pop_dist_sim[self.t, risk,age,0] -= 1
                             self.pop_dist_sim[self.t, risk,age,1] += 1
-                            self.num_new_inf[self.t][risk][age] += 1
+                            self.num_new_inf[self.t,risk, age] += 1
 
     # Function to distribute number of travel-related infections during the whole simulation
     # Input parameters:
@@ -411,7 +411,8 @@ class CovidModel():
                         self.num_travel_inf_l[i] = int(num_travel_inf_per_week+1)
                     else:
                         self.num_travel_inf_l[i] = int(num_travel_inf_per_week)
-
+            else:
+                self.num_travel_inf_l.fill(num_travel_inf_per_week)
 
     # Function to determine number of infection among travelers
      # Input parameters:
