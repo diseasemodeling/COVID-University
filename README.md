@@ -18,6 +18,7 @@ Developed by the Disease Modeling Lab, Industrial Engineering, University of Mas
 **Software development**: Ron Mallach, Dennis Hofmann \
 **Model development reinforcements**: Sonza Singh, Shifali Shifali, Seyedeh Nazanin Khatami, Arman Mohseni Kabir \
 **Acknowledgements**: Dr. George Corey, Dr. Michael Ash, Dr. Laura Balzer, Dr. Hari Balasubramanian, Dr. Andrew Lover \
+Sponsor: NSF #1915481
 **PI**: Dr. Chaitra Gopalappa
 
 # Questions 
